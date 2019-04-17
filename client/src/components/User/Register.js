@@ -26,7 +26,7 @@ function Register(props) {
   const { classes, setLoginToggle } = props;
 
   const [userInput, setUserInput] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     confirmpass: ""
@@ -34,7 +34,16 @@ function Register(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(e);
+    console.log(userInput);
+    axios
+      .post("/users/register", userInput)
+      .then(res => {
+        setLoginToggle("true");
+        console.log("Register success");
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
   };
 
   const handleChange = e => {
@@ -48,9 +57,9 @@ function Register(props) {
     <Paper className={classes.paper}>
       <form onSubmit={handleSubmit}>
         <TextField
-          id="username"
-          name="username"
-          label="Username"
+          id="name"
+          name="name"
+          label="Name"
           fullWidth
           required
           autoFocus={true}

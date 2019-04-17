@@ -1,10 +1,11 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import UserPage from "./components/User/UserPage";
 import Navbar from "./components/Navbar";
+import axios from "axios";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
@@ -15,6 +16,8 @@ function App(props) {
   const { classes } = props;
 
   const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {}, [currentUser]);
 
   return (
     <div>

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { Paper, TextField, Button } from "@material-ui/core";
+import { UserContext } from "../../App";
 import axios from "axios";
 
 const styles = theme => ({
@@ -25,6 +26,8 @@ const styles = theme => ({
 function Login(props) {
   const { classes, setLoginToggle } = props;
 
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+
   const [userInput, setUserInput] = useState({
     email: "",
     password: ""
@@ -32,7 +35,20 @@ function Login(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(e);
+
+    axios
+      .post("/users/login", userInput)
+      .then(res => {
+        setCurrentUser({
+          name: res.data.name,
+          email: res.data.email,
+          id: res.data._id
+        });
+        console.log("Login Success");
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
   };
 
   const handleChange = e => {

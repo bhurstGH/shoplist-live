@@ -5,7 +5,7 @@ const passport = require("passport");
 const User = require("../models/User");
 
 router.post("/users/register", (req, res) => {
-  const { username, email, password, confirmpass } = req.body;
+  const { name, email, password, confirmpass } = req.body;
 
   if (password !== confirmpass) {
     return res.status(400).json({ msg: "Passwords do not match." });
@@ -17,14 +17,14 @@ router.post("/users/register", (req, res) => {
     }
 
     User.create({
-      username,
+      name,
       email,
       password
     })
       .then(user => {
         res.status(200).json({
           id: user._id,
-          username: user.username,
+          name: user.name,
           email: user.email
         });
       })
@@ -34,13 +34,9 @@ router.post("/users/register", (req, res) => {
   });
 });
 
-router.post(
-  "/users/login",
-  passport.authenticate("local", { failureRedirect: "/" }),
-  (req, res) => {
-    res.json(req.user);
-  }
-);
+router.post("/users/login", passport.authenticate("local"), (req, res) => {
+  res.json(req.user);
+});
 
 router.get("/users/logout", (req, res) => {
   req.logout();

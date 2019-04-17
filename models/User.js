@@ -3,7 +3,9 @@ const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
-    type: String
+    type: String,
+    trim: true,
+    required: true
   },
   email: {
     type: String,
@@ -13,6 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  lists: [{ type: mongoose.Schema.ObjectId, ref: "ShoppingList" }],
   date: {
     type: Date,
     default: Date.now()
