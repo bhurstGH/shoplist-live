@@ -15,7 +15,7 @@ require("./config/passport")(passport);
 app.use(express.json());
 
 // MongoDB developer database URI
-const db = process.env.MONGO_DEV_URI;
+const db = process.env.MONGO_URI;
 
 // Connect to the database
 mongoose
