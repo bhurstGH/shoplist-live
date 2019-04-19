@@ -1,6 +1,4 @@
 import React, { useState, useEffect, createContext } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
@@ -12,11 +10,8 @@ import axios from "axios";
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
 
-const styles = theme => ({});
-
-function App(props) {
-  const { classes } = props;
-
+function App() {
+  // User hook for client side auth
   const [currentUser, setCurrentUser] = useState(null);
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);
@@ -27,7 +22,7 @@ function App(props) {
       .get("/user")
       .then(res => {
         if (res.data) {
-          console.log(res.data.user);
+          console.log(res.data);
           setCurrentUser({
             name: res.data.name,
             email: res.data.email,
@@ -65,8 +60,4 @@ function App(props) {
   );
 }
 
-App.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(App);
+export default App;

@@ -5,15 +5,19 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: true
+    minlength: [3, "Name must be at least 3 characters"],
+    maxlength: [25, "Name must be no more than 25 characters"],
+    required: [true, "Name required"]
   },
   email: {
     type: String,
-    required: true
+    unique: true,
+    required: [true, "Email required"]
   },
   password: {
     type: String,
-    required: true
+    trim: true,
+    required: [true, "Password required"]
   },
   lists: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "ShoppingList" }],

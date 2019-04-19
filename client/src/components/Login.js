@@ -36,10 +36,9 @@ function Login(props) {
     password: ""
   });
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    const res = await userLogin(userInput, setCurrentUser);
-    enqueueSnackbar(res.msg, { variant: res.variant });
+  const handleSubmit = async () => {
+    const { msg, variant } = await userLogin(userInput, setCurrentUser);
+    enqueueSnackbar(msg, { variant });
   };
 
   const handleChange = e => {
@@ -51,49 +50,48 @@ function Login(props) {
 
   return (
     <Paper className={classes.paper}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          id="email"
-          name="email"
-          label="Email"
-          fullWidth
-          required
-          autoFocus={true}
-          value={userInput.email}
-          onChange={handleChange}
-          margin="normal"
-        />
-        <TextField
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          fullWidth
-          required
-          value={userInput.password}
-          onChange={handleChange}
-          margin="normal"
-          autoComplete="off"
-        />
-        <Button
-          className={classes.buttonMargin}
-          type="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
-        >
-          Login
-        </Button>
-        <Button
-          className={classes.buttonMargin}
-          color="primary"
-          size="small"
-          fullWidth
-          onClick={() => setLoginToggle(false)}
-        >
-          Go to Register
-        </Button>
-      </form>
+      <TextField
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        fullWidth
+        required
+        autoFocus={true}
+        value={userInput.email}
+        onChange={handleChange}
+        margin="normal"
+      />
+      <TextField
+        id="password"
+        name="password"
+        label="Password"
+        type="password"
+        fullWidth
+        required
+        value={userInput.password}
+        onChange={handleChange}
+        margin="normal"
+        autoComplete="off"
+      />
+      <Button
+        className={classes.buttonMargin}
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        fullWidth
+      >
+        Login
+      </Button>
+      <Button
+        className={classes.buttonMargin}
+        color="primary"
+        size="small"
+        fullWidth
+        onClick={() => setLoginToggle(false)}
+      >
+        Go to Register
+      </Button>
     </Paper>
   );
 }

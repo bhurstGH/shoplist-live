@@ -4,25 +4,29 @@ const User = require("../models/User");
 
 module.exports = function(passport) {
   passport.use(
-    new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-      //Retrieve User
-      User.findOne({ email: email })
-        .then(user => {
-          if (!user) {
-            return done(null, false, { msg: "Email is incorrect" });
-          }
-
-          user.comparePassword(password, (err, match) => {
-            if (!match) {
-              return done(null, false, { msg: "Password is incorrect" });
+    new LocalStrategy(
+      { usernameField: "email", passReqToCallback: true },
+      (req, email, password, done) => {
+        User.findOne({ email })
+          .then(user => {
+            if (!user) {
+              req.authError = "Email is incorrect";
+              return done(null, false);
             }
+
+            user.comparePassword(password, (err, match) => {
+              if (!match) {
+                req.authError = "Passsword is incorrect";
+                return done(null, false);
+              }
+            });
+            return done(null, user);
+          })
+          .catch(err => {
+            done(err);
           });
-          return done(null, user);
-        })
-        .catch(err => {
-          done(err);
-        });
-    })
+      }
+    )
   );
 
   passport.serializeUser((user, done) => {
