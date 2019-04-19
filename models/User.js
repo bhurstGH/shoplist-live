@@ -15,7 +15,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  lists: [{ type: mongoose.Schema.ObjectId, ref: "ShoppingList" }],
+  lists: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "ShoppingList" }],
+    default: undefined
+  },
+  connections: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    default: undefined
+  },
   date: {
     type: Date,
     default: Date.now()

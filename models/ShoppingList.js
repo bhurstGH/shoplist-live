@@ -15,13 +15,16 @@ const shoppingListSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
-  members: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+  members: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    default: undefined
+  },
   items: {
     type: [listItemSchema],
     default: undefined
   }
 });
 
-const ShoppigList = mongoose.model("ShoppingList", shoppingListSchema);
+const ShoppingList = mongoose.model("ShoppingList", shoppingListSchema);
 
 module.exports = ShoppingList;

@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import Login from "./Login";
-import Register from "./Register";
+import ShoppingLists from "../ShoppingList/ShoppingLists";
 
-function UserPage() {
-  const [loginToggle, setLoginToggle] = useState(true);
+function UserPage(props) {
+  const { user } = props;
 
   return (
     <div>
-      {loginToggle ? (
-        <Login setLoginToggle={setLoginToggle} />
-      ) : (
-        <Register setLoginToggle={setLoginToggle} />
-      )}
+      <ShoppingLists user={user} />
     </div>
   );
 }

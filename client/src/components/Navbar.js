@@ -2,19 +2,29 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import UserMenu from "../components/User/UserMenu";
 
-const styles = theme => ({});
+const styles = theme => ({
+  root: {
+    display: "flex",
+    marginBottom: theme.spacing.unit * 2
+  },
+  grow: {
+    flexGrow: 1
+  }
+});
 
 function Navbar(props) {
-  const { classes } = props;
+  const { classes, user, setUser } = props;
 
   return (
-    <div>
+    <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h5" color="inherit">
+          <Typography className={classes.grow} variant="h5" color="inherit">
             ShopList Live
           </Typography>
+          {user && <UserMenu user={user} setUser={setUser} />}
         </Toolbar>
       </AppBar>
     </div>
@@ -22,7 +32,9 @@ function Navbar(props) {
 }
 
 Navbar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  setUser: PropTypes.func
 };
 
 export default withStyles(styles)(Navbar);

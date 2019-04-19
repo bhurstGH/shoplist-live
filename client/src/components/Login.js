@@ -1,16 +1,17 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import { useSnackbar } from "notistack";
 import { Paper, TextField, Button } from "@material-ui/core";
-import { UserContext } from "../../App";
-import axios from "axios";
+import { UserContext } from "../App";
+import { userLogin } from "../js/userHelpers";
 
 const styles = theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing.unit,
     padding: theme.spacing.unit * 2,
     [theme.breakpoints.up("sm")]: {
       width: 420,
@@ -26,29 +27,19 @@ const styles = theme => ({
 function Login(props) {
   const { classes, setLoginToggle } = props;
 
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { setCurrentUser } = useContext(UserContext);
 
   const [userInput, setUserInput] = useState({
     email: "",
     password: ""
   });
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-
-    axios
-      .post("/users/login", userInput)
-      .then(res => {
-        setCurrentUser({
-          name: res.data.name,
-          email: res.data.email,
-          id: res.data._id
-        });
-        console.log("Login Success");
-      })
-      .catch(err => {
-        console.log(err.response);
-      });
+    const res = await userLogin(userInput, setCurrentUser);
+    enqueueSnackbar(res.msg, { variant: res.variant });
   };
 
   const handleChange = e => {
@@ -68,6 +59,7 @@ function Login(props) {
           fullWidth
           required
           autoFocus={true}
+          value={userInput.email}
           onChange={handleChange}
           margin="normal"
         />
@@ -78,6 +70,7 @@ function Login(props) {
           type="password"
           fullWidth
           required
+          value={userInput.password}
           onChange={handleChange}
           margin="normal"
           autoComplete="off"
@@ -98,7 +91,7 @@ function Login(props) {
           fullWidth
           onClick={() => setLoginToggle(false)}
         >
-          Register
+          Go to Register
         </Button>
       </form>
     </Paper>
@@ -109,4 +102,5 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired,
   setLoginToggle: PropTypes.func.isRequired
 };
+
 export default withStyles(styles)(Login);

@@ -9,7 +9,7 @@ const styles = theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing.unit,
     padding: theme.spacing.unit * 2,
     [theme.breakpoints.up("sm")]: {
       width: 420,
@@ -63,6 +63,7 @@ function Register(props) {
           fullWidth
           required
           autoFocus={true}
+          value={userInput.name}
           onChange={handleChange}
           margin="normal"
         />
@@ -72,6 +73,7 @@ function Register(props) {
           label="Email"
           fullWidth
           required
+          value={userInput.email}
           onChange={handleChange}
           margin="normal"
         />
@@ -82,6 +84,7 @@ function Register(props) {
           type="password"
           fullWidth
           required
+          value={userInput.password}
           onChange={handleChange}
           margin="normal"
         />
@@ -92,6 +95,7 @@ function Register(props) {
           type="password"
           fullWidth
           required
+          value={userInput.confirmpass}
           onChange={handleChange}
           margin="normal"
         />
@@ -111,7 +115,7 @@ function Register(props) {
           fullWidth
           onClick={() => setLoginToggle(true)}
         >
-          Login
+          Go to Login
         </Button>
       </form>
     </Paper>

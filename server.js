@@ -3,9 +3,16 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const passport = require("passport");
+const MongoDBStore = require("connect-mongodb-session")(session);
 const path = require("path");
 
 const app = express();
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: "sessions"
+});
+
+store.on("error", err => console.log(err));
 
 // Pass passport to passport config file.
 require("./config/passport")(passport);
@@ -35,8 +42,10 @@ mongoose
 app.use(
   session({
     secret: "sllsecret",
-    resave: false,
-    saveUninitialized: true
+    store: store,
+    resave: true,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 }
   })
 );
 
