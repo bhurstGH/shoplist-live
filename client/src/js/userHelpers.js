@@ -28,11 +28,11 @@ export function userLogin(userInput, setCurrentUser) {
     });
 }
 
-export function userLogout(user, setUser) {
+export function userLogout(setCurrentUser) {
   return axios
     .get("/users/logout")
     .then(res => {
-      setUser(res.data);
+      setCurrentUser(res.data);
       return { msg: "Logged out", variant: "warning" };
     })
     .catch(err => {

@@ -50,10 +50,12 @@ router.post("/users/register", (req, res) => {
 router.post(
   "/users/login",
   passport.authenticate("local", { failWithError: true }),
+  // Successful login
   (req, res) => {
     console.log("Login Success");
     res.json(req.user);
   },
+  // Login failure
   (err, req, res, next) => {
     console.log(req.authError);
     res.status(400).json({ msg: req.authError });
@@ -62,7 +64,6 @@ router.post(
 
 // Get current user
 router.get("/user", (req, res, next) => {
-  console.log(req.user);
   if (req.isAuthenticated()) {
     res.json(req.user);
   } else {

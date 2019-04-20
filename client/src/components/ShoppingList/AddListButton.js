@@ -14,7 +14,7 @@ import axios from "axios";
 const styles = theme => ({});
 
 function AddListButton(props) {
-  const { classes, user } = props;
+  const { classes, currentUser } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [listInfo, setListInfo] = useState({
@@ -90,7 +90,7 @@ function AddListButton(props) {
 
 AddListButton.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  currentUser: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(AddListButton);

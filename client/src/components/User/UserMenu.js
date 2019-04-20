@@ -5,15 +5,15 @@ import { userLogout } from "../../js/userHelpers";
 import { Menu, MenuItem, Button } from "@material-ui/core";
 
 function UserMenu(props) {
-  const { user, setUser } = props;
+  const { currentUser, setCurrentUser } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = async () => {
-    const res = await userLogout(user, setUser);
-    enqueueSnackbar(res.msg, { variant: res.variant });
+    const { msg, variant } = await userLogout(setCurrentUser);
+    enqueueSnackbar(msg, { variant });
   };
 
   return (
@@ -23,7 +23,7 @@ function UserMenu(props) {
         color="inherit"
         onClick={e => setAnchorEl(e.currentTarget)}
       >
-        {user.name}
+        {currentUser.name}
       </Button>
       <Menu
         anchorEl={anchorEl}
@@ -38,8 +38,8 @@ function UserMenu(props) {
 }
 
 UserMenu.propTypes = {
-  user: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired
+  currentUser: PropTypes.object.isRequired,
+  setCurrentUser: PropTypes.func.isRequired
 };
 
 export default UserMenu;

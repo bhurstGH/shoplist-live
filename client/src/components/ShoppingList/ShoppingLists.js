@@ -20,18 +20,18 @@ const styles = theme => ({
 });
 
 function ShoppingLists(props) {
-  const { classes, user } = props;
+  const { classes, currentUser } = props;
 
   return (
     <Paper className={classes.paper}>
-      <AddButtonList user={user} />
+      <AddButtonList currentUser={currentUser} />
     </Paper>
   );
 }
 
 ShoppingLists.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  currentUser: PropTypes.object
 };
 
 export default withStyles(styles)(ShoppingLists);

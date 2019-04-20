@@ -37,7 +37,7 @@ function App() {
   // If not, load the login and/or register forms.
   const isLoggedIn = () => {
     if (currentUser) {
-      return <UserPage user={currentUser} />;
+      return <UserPage currentUser={currentUser} />;
     } else {
       return loginToggle ? (
         <Login setLoginToggle={setLoginToggle} />
@@ -52,7 +52,7 @@ function App() {
       <CssBaseline />
       <SnackbarProvider dense maxSnack={3}>
         <UserContext.Provider value={{ currentUser, setCurrentUser }}>
-          <Navbar user={currentUser} setUser={setCurrentUser} />
+          <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
           {isLoggedIn()}
         </UserContext.Provider>
       </SnackbarProvider>

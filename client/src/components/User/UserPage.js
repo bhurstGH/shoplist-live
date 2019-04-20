@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import ShoppingLists from "../ShoppingList/ShoppingLists";
 
 function UserPage(props) {
-  const { user } = props;
+  const { currentUser } = props;
 
   return (
     <div>
-      <ShoppingLists user={user} />
+      <ShoppingLists currentUser={currentUser} />
     </div>
   );
 }

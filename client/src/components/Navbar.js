@@ -15,7 +15,7 @@ const styles = theme => ({
 });
 
 function Navbar(props) {
-  const { classes, user, setUser } = props;
+  const { classes, currentUser, setCurrentUser } = props;
 
   return (
     <div className={classes.root}>
@@ -24,7 +24,12 @@ function Navbar(props) {
           <Typography className={classes.grow} variant="h5" color="inherit">
             ShopList Live
           </Typography>
-          {user && <UserMenu user={user} setUser={setUser} />}
+          {currentUser && (
+            <UserMenu
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+            />
+          )}
         </Toolbar>
       </AppBar>
     </div>
@@ -33,8 +38,8 @@ function Navbar(props) {
 
 Navbar.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object,
-  setUser: PropTypes.func
+  currentUser: PropTypes.object,
+  setCurrentUser: PropTypes.func
 };
 
 export default withStyles(styles)(Navbar);
