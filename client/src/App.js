@@ -12,26 +12,49 @@ export const UserContext = createContext({});
 
 function App() {
   // User hook for client side auth
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    const storedUser = sessionStorage.length
+      ? {
+          name: sessionStorage.getItem("name"),
+          email: sessionStorage.getItem("email"),
+          id: sessionStorage.getItem("id")
+        }
+      : null;
+    return storedUser;
+  });
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);
 
-  useEffect(() => {
-    console.log(currentUser);
-    axios
-      .get("/user")
-      .then(res => {
-        if (res.data) {
-          console.log(res.data);
-          setCurrentUser({
-            name: res.data.name,
-            email: res.data.email,
-            id: res.data._id
-          });
-        }
-      })
-      .catch(err => console.log(err.response.data));
-  }, []);
+  // useEffect(() => {
+  //   axios.get("/user").then(() => {
+  //     socket.open();
+  //     socket.emit("send_user", user => {
+  //       console.log(user);
+  //       setCurrentUser({
+  //         name: user.name,
+  //         email: user.email,
+  //         id: user.id
+  //       });
+  //     });
+  //   });
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log(currentUser);
+  //   axios
+  //     .get("/user")
+  //     .then(res => {
+  //       if (res.data) {
+  //         console.log(res.data);
+  //         setCurrentUser({
+  //           name: res.data.name,
+  //           email: res.data.email,
+  //           id: res.data._id
+  //         });
+  //       }
+  //     })
+  //     .catch(err => console.log(err.response.data));
+  // }, []);
 
   // If the user is logged, load user page
   // If not, load the login and/or register forms.

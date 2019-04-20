@@ -19,8 +19,12 @@ export function userLogin(userInput, setCurrentUser) {
       setCurrentUser({
         name: res.data.name,
         email: res.data.email,
-        id: res.data._id
+        id: res.data.id
       });
+      console.log(res.data._id);
+      sessionStorage.setItem("name", res.data.name);
+      sessionStorage.setItem("email", res.data.email);
+      sessionStorage.setItem("id", res.data.id);
       return { msg: "Login Success", variant: "success" };
     })
     .catch(err => {
@@ -33,6 +37,7 @@ export function userLogout(setCurrentUser) {
     .get("/users/logout")
     .then(res => {
       setCurrentUser(res.data);
+      sessionStorage.clear();
       return { msg: "Logged out", variant: "warning" };
     })
     .catch(err => {
