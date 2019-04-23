@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const listItemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  purchased: Boolean,
-  price: Number
+  purchased: Boolean
 });
 
 const shoppingListSchema = new mongoose.Schema({
@@ -17,11 +17,18 @@ const shoppingListSchema = new mongoose.Schema({
   },
   members: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    default: undefined
+    default: null
   },
   items: {
     type: [listItemSchema],
-    default: undefined
+    default: null
+  }
+});
+
+// If this is a new list, save this list to its members before saving
+shoppingListSchema.pre("save", async function() {
+  if (this.isNew) {
+    User.addListToUsers(this.members, this._id);
   }
 });
 

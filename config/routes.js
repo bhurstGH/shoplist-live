@@ -1,6 +1,6 @@
-module.exports = app => {
-  const userRoutes = require("../routes/users");
-  const listRoutes = require("../routes/lists");
+module.exports = (app, io) => {
+  const userRoutes = require("../routes/users")(io);
+  const listRoutes = require("../routes/lists")(io);
 
   app.use(userRoutes);
   app.use(listRoutes);

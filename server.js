@@ -7,6 +7,10 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const path = require("path");
 
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server);
+app.locals.io = io;
+
 const store = new MongoDBStore({
   uri: process.env.MONGO_URI,
   collection: "sessions"
@@ -45,7 +49,7 @@ app.use(
     store: store,
     resave: true,
     saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 }
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }
   })
 );
 
@@ -54,7 +58,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-require("./config/routes")(app);
+require("./config/routes")(app, io);
 
 //Serve static assets from client if in production
 if (process.env.NODE_ENV === "production") {
@@ -68,4 +72,4 @@ if (process.env.NODE_ENV === "production") {
 // Server
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server listening on ${PORT}`));
+server.listen(PORT, console.log(`Server listening on ${PORT}`));

@@ -18,16 +18,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     trim: true,
     minlength: [6, "Password must be at least 6 characters"],
-    maxlength: [10, "Password must be no more than 10 characters"],
     required: [true, "Password required"]
   },
   lists: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "ShoppingList" }],
-    default: undefined
+    default: null
   },
   connections: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    default: undefined
+    default: () => null
   },
   date: {
     type: Date,
@@ -35,6 +34,7 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+// Encrypt password with bcrypt before saving
 userSchema.pre("save", function(next) {
   if (!this.isModified("password")) {
     return next();
@@ -45,6 +45,47 @@ userSchema.pre("save", function(next) {
 
 userSchema.methods.comparePassword = function(plainpass, callback) {
   return callback(null, bcrypt.compareSync(plainpass, this.password));
+};
+
+// Add list to user.
+userSchema.method.addList = function(id) {
+  if (this.lists === null) {
+    return (this.lists = [id]);
+  }
+
+  return this.lists.addToSet(id);
+};
+
+// Add listId to users in idArray
+userSchema.statics.addListToUsers = async function(idArray, listId) {
+  const listMembers = await User.find()
+    .where("_id")
+    .in(idArray);
+  listMembers.forEach(member => {
+    member.lists.addToSet(listId);
+    member.save();
+  });
+};
+
+// Add a connection
+userSchema.methods.addConnection = function(id) {
+  if (this.connections === null) {
+    return (this.connections = [id]);
+  }
+
+  return this.connections.addToSet(id);
+};
+
+// Get connections, returning only the id, email, and name to the client
+userSchema.query.getConnections = function() {
+  return this.select("connections").populate("connections", "email name");
+};
+
+userSchema.query.getLists = function() {
+  return this.select("lists").populate({
+    path: "lists",
+    populate: { path: "members", select: "email name" }
+  });
 };
 
 const User = mongoose.model("User", userSchema);
