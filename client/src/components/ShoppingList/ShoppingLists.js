@@ -1,30 +1,89 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Paper, Button } from "@material-ui/core";
-import AddButtonList from "./AddListButton";
+import {
+  Paper,
+  Button,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+  Divider,
+  Collapse
+} from "@material-ui/core";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import AddList from "./AddList";
+import { getLists } from "../../js/listHelpers";
+import io from "socket.io-client";
 
 const styles = theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
     margin: theme.spacing.unit,
     padding: theme.spacing.unit * 2,
     [theme.breakpoints.up("sm")]: {
-      width: 420,
+      width: 500,
       marginLeft: "auto",
       marginRight: "auto"
     }
+  },
+  addButton: {
+    alignSelf: "flex-end",
+    margin: theme.spacing.unit
   }
 });
 
 function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
+  const { current: socket } = useRef(
+    io("http://localhost:5000/socketlists", { autoConnect: false })
+  );
+
+  const [lists, setLists] = useState([]);
+  const [listExpanded, setListExpanded] = useState({});
+
+  useEffect(() => {
+    socket.open();
+    // getLists(setLists);
+
+    socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
+      setLists(listPayload);
+    });
+    socket.on("NEW_LIST", listsPayload => {
+      console.log(listsPayload);
+
+      setLists(prevLists => [...prevLists, listsPayload]);
+    });
+    return () => {
+      socket.close();
+    };
+  }, []);
+
   return (
     <Paper className={classes.paper}>
-      <AddButtonList currentUser={currentUser} />
+      <div className={classes.addButton}>
+        <AddList currentUser={currentUser} socket={socket}>
+          <Button variant="contained" color="primary" size="small">
+            Add List
+          </Button>
+        </AddList>
+      </div>
+      <Divider />
+      <List
+        subheader={<ListSubheader>{currentUser.name}'s Lists</ListSubheader>}
+      >
+        {lists.map(list => (
+          <ListItem key={list._id} button>
+            <ListItemText
+              primary={list.name}
+              secondary={`${list.members.length} list members`}
+            />
+          </ListItem>
+        ))}
+      </List>
     </Paper>
   );
 }

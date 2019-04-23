@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 
+// A future friend list display for connections
+
 function UserConnections() {
   return <div />;
 }

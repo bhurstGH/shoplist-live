@@ -35,7 +35,8 @@ function Register(props) {
     confirmpass: ""
   });
 
-  const handleSubmit = async () => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     const { msg, variant } = await userRegister(userInput, setLoginToggle);
     enqueueSnackbar(msg, { variant });
   };
@@ -49,69 +50,71 @@ function Register(props) {
 
   return (
     <Paper className={classes.paper}>
-      <TextField
-        id="name"
-        name="name"
-        label="Name"
-        type="text"
-        fullWidth
-        required
-        autoFocus={true}
-        value={userInput.name}
-        onChange={handleChange}
-        margin="normal"
-      />
-      <TextField
-        id="email"
-        name="email"
-        label="Email"
-        type="email"
-        fullWidth
-        required
-        value={userInput.email}
-        onChange={handleChange}
-        margin="normal"
-      />
-      <TextField
-        id="password"
-        name="password"
-        label="Password"
-        type="password"
-        fullWidth
-        required
-        value={userInput.password}
-        onChange={handleChange}
-        margin="normal"
-      />
-      <TextField
-        id="confirmpass"
-        name="confirmpass"
-        label="Confirm Password"
-        type="password"
-        fullWidth
-        required
-        value={userInput.confirmpass}
-        onChange={handleChange}
-        margin="normal"
-      />
-      <Button
-        className={classes.buttonMargin}
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-      >
-        Register
-      </Button>
-      <Button
-        className={classes.buttonMargin}
-        color="primary"
-        size="small"
-        fullWidth
-        onClick={() => setLoginToggle(true)}
-      >
-        Go to Login
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          type="text"
+          fullWidth
+          required
+          autoFocus={true}
+          value={userInput.name}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <TextField
+          id="email"
+          name="email"
+          label="Email"
+          type="email"
+          fullWidth
+          required
+          value={userInput.email}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <TextField
+          id="password"
+          name="password"
+          label="Password"
+          type="password"
+          fullWidth
+          required
+          value={userInput.password}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <TextField
+          id="confirmpass"
+          name="confirmpass"
+          label="Confirm Password"
+          type="password"
+          fullWidth
+          required
+          value={userInput.confirmpass}
+          onChange={handleChange}
+          margin="normal"
+        />
+        <Button
+          className={classes.buttonMargin}
+          variant="contained"
+          color="primary"
+          type="submit"
+          fullWidth
+        >
+          Register
+        </Button>
+        <Button
+          className={classes.buttonMargin}
+          color="primary"
+          size="small"
+          fullWidth
+          onClick={() => setLoginToggle(true)}
+        >
+          Go to Login
+        </Button>
+      </form>
     </Paper>
   );
 }

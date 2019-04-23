@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import { userLogout } from "../../js/userHelpers";
 import { Menu, MenuItem, Button } from "@material-ui/core";
+import AddConnection from "../Connections/AddConnection";
 
 function UserMenu(props) {
   const { currentUser, setCurrentUser } = props;
@@ -30,7 +31,12 @@ function UserMenu(props) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem>Add Connections</MenuItem>
+        <AddConnection>
+          {/* Wrap MenuItem inside AddConnection.
+          This ensures the entire element can be 
+          clicked to open the dialog */}
+          <MenuItem>Add Connections</MenuItem>
+        </AddConnection>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

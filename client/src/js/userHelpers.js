@@ -1,17 +1,21 @@
 import axios from "axios";
 
+// Makes call to register user
+// Toggles back to Login component
 export function userRegister(userInput, setLoginToggle) {
   return axios
     .post("/users/register", userInput)
     .then(res => {
       setLoginToggle("true");
-      return { msg: "Register Success", variant: "success" };
+      return { msg: `Registered as ${res.data.name}`, variant: "success" };
     })
     .catch(err => {
       return { msg: err.response.data.msg, variant: "error" };
     });
 }
 
+// Makes call to log in
+// Saves user to sessionStorage to persist state
 export function userLogin(userInput, setCurrentUser) {
   return axios
     .post("/users/login", userInput)
@@ -21,17 +25,19 @@ export function userLogin(userInput, setCurrentUser) {
         email: res.data.email,
         id: res.data.id
       });
-      console.log(res.data._id);
       sessionStorage.setItem("name", res.data.name);
       sessionStorage.setItem("email", res.data.email);
       sessionStorage.setItem("id", res.data.id);
-      return { msg: "Login Success", variant: "success" };
+      return { msg: `Logged in as ${res.data.name}`, variant: "success" };
     })
     .catch(err => {
       return { msg: err.response.data.msg, variant: "error" };
     });
 }
 
+// Makes call to logout
+// Sets currentUser state to null
+// Clears sessionStorage
 export function userLogout(setCurrentUser) {
   return axios
     .get("/users/logout")
@@ -43,4 +49,10 @@ export function userLogout(setCurrentUser) {
     .catch(err => {
       return { msg: "Logout failed", variant: "error" };
     });
+}
+export function getUser() {
+  return axios
+    .get("/user")
+    .then()
+    .catch();
 }

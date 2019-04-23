@@ -1,17 +1,21 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, useRef, createContext } from "react";
 import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
 import UserPage from "./components/User/UserPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import axios from "axios";
+import io from "socket.io-client";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
 
 function App() {
+  // Open socket with useRef so that it persists through renders
+  // const { current: socket } = useRef(io("http://localhost:5000/user"));
+
   // User hook for client side auth
+  // Check session storage to persist user state
   const [currentUser, setCurrentUser] = useState(() => {
     const storedUser = sessionStorage.length
       ? {
@@ -22,39 +26,20 @@ function App() {
       : null;
     return storedUser;
   });
+
+  // useEffect(() => {
+  //   socket.open();
+  //   socket.emit("CHECK_SESSION", data => {
+  //     console.log(data);
+  //   });
+
+  //   return () => {
+  //     socket.close();
+  //   };
+  // });
+
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);
-
-  // useEffect(() => {
-  //   axios.get("/user").then(() => {
-  //     socket.open();
-  //     socket.emit("send_user", user => {
-  //       console.log(user);
-  //       setCurrentUser({
-  //         name: user.name,
-  //         email: user.email,
-  //         id: user.id
-  //       });
-  //     });
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log(currentUser);
-  //   axios
-  //     .get("/user")
-  //     .then(res => {
-  //       if (res.data) {
-  //         console.log(res.data);
-  //         setCurrentUser({
-  //           name: res.data.name,
-  //           email: res.data.email,
-  //           id: res.data._id
-  //         });
-  //       }
-  //     })
-  //     .catch(err => console.log(err.response.data));
-  // }, []);
 
   // If the user is logged, load user page
   // If not, load the login and/or register forms.
