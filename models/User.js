@@ -60,12 +60,19 @@ userSchema.method.addList = function(id) {
 userSchema.statics.addListToUsers = async function(idArray, listId) {
   const listMembers = await User.find()
     .where("_id")
-    .in(idArray);
-  listMembers.forEach(member => {
-    member.lists.addToSet(listId);
-    member.save();
-  });
+    .in(idArray)
+    .cursor()
+    .on("data", function(member) {
+      member.lists.addToSet(listId);
+      member.save();
+    });
+  // listMembers.forEach(member => {
+  //   member.lists.addToSet(listId);
+  //   member.save();
+  // });
 };
+
+userSchema.statics.removeListFromUsers = function(id) {};
 
 // Add a connection
 userSchema.methods.addConnection = function(id) {

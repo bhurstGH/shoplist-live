@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Button,
+  IconButton,
   List,
   ListSubheader,
   ListItem,
@@ -13,6 +14,7 @@ import {
 } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
+import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
 import { getLists } from "../../js/listHelpers";
 import io from "socket.io-client";
@@ -47,11 +49,11 @@ function ShoppingLists(props) {
 
   useEffect(() => {
     socket.open();
-    // getLists(setLists);
 
-    socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
-      setLists(listPayload);
-    });
+    getLists(socket, currentUser.id, setLists);
+    // socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
+    //   setLists(listPayload);
+    // });
     socket.on("NEW_LIST", listsPayload => {
       console.log(listsPayload);
 
@@ -61,6 +63,13 @@ function ShoppingLists(props) {
       socket.close();
     };
   }, []);
+
+  const deleteList = listId => {
+    socket.emit("DELETE_LIST", listId);
+    socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
+      setLists(listPayload);
+    });
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -81,6 +90,9 @@ function ShoppingLists(props) {
               primary={list.name}
               secondary={`${list.members.length} list members`}
             />
+            <IconButton onClick={() => deleteList(list._id)}>
+              <Clear />
+            </IconButton>
           </ListItem>
         ))}
       </List>

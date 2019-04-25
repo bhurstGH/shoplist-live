@@ -8,8 +8,6 @@ module.exports = io => {
   const listsIO = io.of("/socketlists");
 
   listsIO.on("connection", socket => {
-    socket.emit("TEST", "You made it");
-
     // Create a new list
     socket.on("NEW_LIST", (listInfo, res) => {
       const { userId, name, members } = listInfo;
@@ -72,22 +70,17 @@ module.exports = io => {
         });
     });
 
-    // router.get("/lists", (req, res) => {
-    //   if (!req.isAuthenticated()) {
-    //     return res.json({ msg: "Must be logged in to retrieve lists" });
-    //   }
+    // Delete list
 
-    //   User.findById(req.user._id)
-    //     .getLists()
-    //     .then(lists => {
-    //       console.log("Lists retrieved");
-    //       res.status(200).json(lists);
-    //     })
-    //     .catch(err => {
-    //       console.log("Failed to retrieve lists");
-    //       res.status(400).json(err);
-    //     });
-    // });
+    socket.on("DELETE_LIST", listId => {
+      ShoppingList.findByIdAndDelete(listId)
+        .then(list => {
+          console.log(list);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
   });
 
   return router;

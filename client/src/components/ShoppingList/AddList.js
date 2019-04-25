@@ -12,7 +12,7 @@ import {
 import { useSnackbar } from "notistack";
 import { ShowDialog } from "../util/ShowDialog";
 import ConnectionList from "../Connections/ConnectionList";
-import { checkListSuccess } from "../../js/listHelpers";
+import { addNewList } from "../../js/listHelpers";
 
 const styles = theme => ({});
 
@@ -37,13 +37,20 @@ function AddList(props) {
       name: listName,
       members
     };
-    socket.emit("NEW_LIST", listInfo, (err, list) => {
-      const { msg, variant } = checkListSuccess(err, list);
+
+    addNewList(socket, listInfo, (msg, variant) => {
       enqueueSnackbar(msg, { variant });
       if (variant === "success") {
         setIsOpen(false);
       }
     });
+    // socket.emit("NEW_LIST", listInfo, (err, list) => {
+    //   const { msg, variant } = checkListSuccess(err, list);
+    //   enqueueSnackbar(msg, { variant });
+    //   if (variant === "success") {
+    //     setIsOpen(false);
+    //   }
+    // });
   };
 
   return (

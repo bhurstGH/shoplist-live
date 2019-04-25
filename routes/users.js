@@ -119,7 +119,7 @@ module.exports = io => {
   // Logout user out
   router.get("/users/logout", (req, res) => {
     req.logout();
-    console.log("Logout Sucess");
+    console.log("Logout Success");
     res.json(null);
   });
   return router;

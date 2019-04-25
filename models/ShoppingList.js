@@ -32,6 +32,8 @@ shoppingListSchema.pre("save", async function() {
   }
 });
 
+// shoppingListSchema.post("remove");
+
 const ShoppingList = mongoose.model("ShoppingList", shoppingListSchema);
 
 module.exports = ShoppingList;
