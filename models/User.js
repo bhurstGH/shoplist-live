@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   connections: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    default: () => null
+    default: null
   },
   date: {
     type: Date,
