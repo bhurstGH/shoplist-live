@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import UserMenu from "../components/User/UserMenu";
+import AddConnection from "./Connections/AddConnection";
 
 const styles = theme => ({
   root: {
@@ -25,10 +26,12 @@ function Navbar(props) {
             ShopList Live
           </Typography>
           {currentUser && (
-            <UserMenu
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-            />
+            <UserMenu currentUser={currentUser} setCurrentUser={setCurrentUser}>
+              <AddConnection>Add Connection</AddConnection>
+              <div>st2</div>
+              <div>st2</div>
+              <div>st2</div>
+            </UserMenu>
           )}
         </Toolbar>
       </AppBar>

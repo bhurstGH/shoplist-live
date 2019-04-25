@@ -10,18 +10,18 @@ import {
   TextField
 } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import { ShowDialog } from "../util/ShowDialog";
+import ShowComponent from "../util/ShowComponent";
 import ConnectionList from "../Connections/ConnectionList";
 import { addNewList } from "../../js/listHelpers";
 
 const styles = theme => ({});
 
 function AddList(props) {
-  const { classes, currentUser, socket, children } = props;
+  const { classes, currentUser, socket, children, open, handleClose } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(open || false);
 
   const [listName, setListName] = useState("");
   const [members, setMembers] = useState([]);
@@ -41,7 +41,7 @@ function AddList(props) {
     addNewList(socket, listInfo, (msg, variant) => {
       enqueueSnackbar(msg, { variant });
       if (variant === "success") {
-        setIsOpen(false);
+        handleClose();
       }
     });
     // socket.emit("NEW_LIST", listInfo, (err, list) => {
@@ -55,8 +55,8 @@ function AddList(props) {
 
   return (
     <React.Fragment>
-      <ShowDialog openDialog={setIsOpen}>{children}</ShowDialog>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      {/* <ShowComponent input={children} showWith={() => setIsOpen(true)} /> */}
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New List</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
@@ -76,7 +76,7 @@ function AddList(props) {
             <ConnectionList output={members} setOutput={setMembers} />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setIsOpen(false)} color="primary">
+            <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">
@@ -91,7 +91,8 @@ function AddList(props) {
 
 AddList.propTypes = {
   classes: PropTypes.object.isRequired,
-  currentUser: PropTypes.object.isRequired
+  currentUser: PropTypes.object.isRequired,
+  socket: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(AddList);

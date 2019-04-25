@@ -9,7 +9,7 @@ import {
   TextField
 } from "@material-ui/core";
 import { connectionAdd } from "../../js/connectionHelpers";
-import { ShowDialog } from "../util/ShowDialog";
+import ShowComponent from "../util/ShowComponent";
 
 function AddConnection(props) {
   const { children } = props;
@@ -36,7 +36,7 @@ function AddConnection(props) {
 
   return (
     <React.Fragment>
-      <ShowDialog openDialog={setIsOpen}>{children}</ShowDialog>
+      <ShowComponent input={children} showWith={() => setIsOpen(true)} />
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <DialogTitle>Add connections to share lists</DialogTitle>
         <form onSubmit={handleSubmit}>

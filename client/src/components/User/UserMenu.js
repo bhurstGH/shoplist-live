@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import { userLogout } from "../../js/userHelpers";
 import { Menu, MenuItem, Button } from "@material-ui/core";
-import AddConnection from "../Connections/AddConnection";
 
 function UserMenu(props) {
-  const { currentUser, setCurrentUser } = props;
+  const { children, currentUser, setCurrentUser } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -15,6 +14,7 @@ function UserMenu(props) {
   const handleLogout = async () => {
     const { msg, variant } = await userLogout(setCurrentUser);
     enqueueSnackbar(msg, { variant });
+    setAnchorEl(null);
   };
 
   return (
@@ -31,13 +31,18 @@ function UserMenu(props) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <AddConnection>
-          {/* Wrap MenuItem inside AddConnection.
+        {children.map((child, index) => (
+          <MenuItem key={index} onClick={() => setAnchorEl(null)}>
+            {child}
+          </MenuItem>
+        ))}
+        {/* <AddConnection>
+          Wrap MenuItem inside AddConnection.
           This ensures the entire element can be 
-          clicked to open the dialog */}
+          clicked to open the dialog
           <MenuItem>Add Connections</MenuItem>
         </AddConnection>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
       </Menu>
     </div>
   );

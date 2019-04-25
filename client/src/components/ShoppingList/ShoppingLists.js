@@ -18,6 +18,7 @@ import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
 import { getLists } from "../../js/listHelpers";
 import io from "socket.io-client";
+import { useShowComponent } from "../util/ShowComponent";
 
 const styles = theme => ({
   paper: {
@@ -44,10 +45,14 @@ function ShoppingLists(props) {
     io("http://localhost:3000/socketlists", { autoConnect: false })
   );
 
+  const [showAddList, showAddListWith] = useShowComponent(AddList);
+
   const [lists, setLists] = useState([]);
   const [listExpanded, setListExpanded] = useState({});
 
   useEffect(() => {
+    console.log(showAddList);
+    console.log(showAddListWith);
     socket.open();
 
     getLists(socket, currentUser.id, setLists);
@@ -74,11 +79,13 @@ function ShoppingLists(props) {
   return (
     <Paper className={classes.paper}>
       <div className={classes.addButton}>
-        <AddList currentUser={currentUser} socket={socket}>
+        {showAddList({ currentUser: currentUser, socket: socket })}
+        {showAddListWith(
           <Button variant="contained" color="primary" size="small">
             Add List
           </Button>
-        </AddList>
+        )}
+        {/* </AddList> */}
       </div>
       <Divider />
       <List
