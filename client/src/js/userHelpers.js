@@ -38,12 +38,10 @@ export function userLogin(userInput, setCurrentUser) {
 // Makes call to logout
 // Sets currentUser state to null
 // Clears sessionStorage
-export function userLogout(setCurrentUser) {
+export function userLogout() {
   return axios
     .get("/users/logout")
     .then(res => {
-      setCurrentUser(res.data);
-      sessionStorage.clear();
       return { msg: "Logged out", variant: "warning" };
     })
     .catch(err => {

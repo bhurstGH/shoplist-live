@@ -10,18 +10,15 @@ import {
   TextField
 } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import ShowComponent from "../util/ShowComponent";
 import ConnectionList from "../Connections/ConnectionList";
 import { addNewList } from "../../js/listHelpers";
 
 const styles = theme => ({});
 
 function AddList(props) {
-  const { classes, currentUser, socket, children, open, handleClose } = props;
+  const { classes, currentUser, socket, open, handleClose } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-
-  // const [isOpen, setIsOpen] = useState(open || false);
 
   const [listName, setListName] = useState("");
   const [members, setMembers] = useState([]);
@@ -55,7 +52,6 @@ function AddList(props) {
 
   return (
     <React.Fragment>
-      {/* <ShowComponent input={children} showWith={() => setIsOpen(true)} /> */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New List</DialogTitle>
         <form onSubmit={handleSubmit}>

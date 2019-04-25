@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { useSnackbar } from "notistack";
-import { userLogout } from "../../js/userHelpers";
 import { Menu, MenuItem, Button } from "@material-ui/core";
 
 function UserMenu(props) {
   const { children, currentUser, setCurrentUser } = props;
 
-  const { enqueueSnackbar } = useSnackbar();
-
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleLogout = async () => {
-    const { msg, variant } = await userLogout(setCurrentUser);
-    enqueueSnackbar(msg, { variant });
-    setAnchorEl(null);
-  };
 
   return (
     <div>

@@ -15,13 +15,16 @@ import { getConnections } from "../../js/connectionHelpers";
 
 // Comonent that displays connections in a select menu with checkboxes
 // Will feed selected connections as an array to parent
-// output, setOutput props = parent's useState hook
+// output and setOutput props are the parent's useState hook
 
 const styles = theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
     width: 240
+  },
+  button: {
+    alignSelf: "flex-end"
   }
 });
 
@@ -38,6 +41,8 @@ function ConnectionList(props) {
 
   // Update parent's hooks
   const handleChange = e => {
+    console.log(e.target.value);
+    console.log(e.currentTarget);
     setOutput(e.target.value);
   };
 
@@ -71,6 +76,9 @@ function ConnectionList(props) {
               />
             </MenuItem>
           ))}
+          <Button className={classes.button} value="ok" type="submit">
+            Ok
+          </Button>
         </Select>
       </FormControl>
     </div>

@@ -9,14 +9,11 @@ import {
   TextField
 } from "@material-ui/core";
 import { connectionAdd } from "../../js/connectionHelpers";
-import ShowComponent from "../util/ShowComponent";
 
 function AddConnection(props) {
-  const { children } = props;
+  const { open, handleClose } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const [connection, setEmailConnection] = useState({ email: "" });
 
@@ -26,7 +23,7 @@ function AddConnection(props) {
     enqueueSnackbar(msg, { variant });
     setEmailConnection({ email: "" });
     if (variant === "success") {
-      setIsOpen(false);
+      handleClose();
     }
   };
 
@@ -36,8 +33,7 @@ function AddConnection(props) {
 
   return (
     <React.Fragment>
-      <ShowComponent input={children} showWith={() => setIsOpen(true)} />
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add connections to share lists</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
@@ -55,7 +51,7 @@ function AddConnection(props) {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setIsOpen(false)} color="primary">
+            <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">

@@ -18,7 +18,7 @@ import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
 import { getLists } from "../../js/listHelpers";
 import io from "socket.io-client";
-import { useShowComponent } from "../util/ShowComponent";
+import useShowComponent from "../util/useShowComponent";
 
 const styles = theme => ({
   paper: {
@@ -51,8 +51,6 @@ function ShoppingLists(props) {
   const [listExpanded, setListExpanded] = useState({});
 
   useEffect(() => {
-    console.log(showAddList);
-    console.log(showAddListWith);
     socket.open();
 
     getLists(socket, currentUser.id, setLists);
