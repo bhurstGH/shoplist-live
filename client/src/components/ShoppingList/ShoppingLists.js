@@ -41,7 +41,7 @@ function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
   const { current: socket } = useRef(
-    io("http://localhost:5000/socketlists", { autoConnect: false })
+    io("http://localhost:3000/socketlists", { autoConnect: false })
   );
 
   const [lists, setLists] = useState([]);

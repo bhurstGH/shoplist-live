@@ -9,7 +9,6 @@ const path = require("path");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-app.locals.io = io;
 
 const store = new MongoDBStore({
   uri: process.env.MONGO_URI,

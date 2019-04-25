@@ -12,6 +12,7 @@ export function checkListSuccess(err, list) {
     payload: list
   };
 }
+
 export function addNewList(socket, newList, callback) {
   socket.emit("NEW_LIST", newList, (err, list) => {
     const { msg, variant, payload } = checkListSuccess(err, list);
