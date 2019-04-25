@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import UserPage from "./components/User/UserPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
