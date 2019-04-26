@@ -75,12 +75,6 @@ function ShoppingList(props) {
             >
               <PaymentIcon />
             </Button>
-            {/* <IconButton className={classes.button} onClick={handleUnshow}>
-              <AddIcon />
-            </IconButton>
-            <IconButton className={classes.button} onClick={handleUnshow}>
-              <PaymentIcon />
-            </IconButton> */}
           </Toolbar>
         </AppBar>
       </Dialog>

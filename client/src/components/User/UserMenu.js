@@ -13,9 +13,6 @@ function UserMenu(props) {
   const handleLogout = async () => {
     const { msg, variant } = await userLogout(setCurrentUser);
     enqueueSnackbar(msg, { variant });
-    if (variant === "warning") {
-      setAnchorEl(null);
-    }
   };
 
   return (
@@ -32,6 +29,11 @@ function UserMenu(props) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
+        <MenuItem
+          onClick={() => showAddConnectionWith(null, () => setAnchorEl(null))}
+        >
+          Add Connection
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

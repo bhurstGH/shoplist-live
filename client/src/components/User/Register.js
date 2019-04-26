@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import { Paper, TextField, Button } from "@material-ui/core";
-import { userRegister } from "../js/userHelpers";
+import { userRegister } from "../../js/userHelpers";
 
 const styles = theme => ({
   paper: {

@@ -3,16 +3,31 @@ import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
 import ShoppingLists from "./components/ShoppingList/ShoppingLists";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/User/Login";
+import Register from "./components/User/Register";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => {
-    const storedUser = {};
+    const storedUser = sessionStorage.length
+      ? {
+          name: sessionStorage.getItem("name"),
+          email: sessionStorage.getItem("email"),
+          id: sessionStorage.getItem("id")
+        }
+      : null;
+    return storedUser;
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      sessionStorage.setItem("name", currentUser.name);
+      sessionStorage.setItem("email", currentUser.email);
+      sessionStorage.setItem("id", currentUser.id);
+    }
+  }, [currentUser]);
 
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);

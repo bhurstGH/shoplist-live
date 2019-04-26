@@ -13,9 +13,11 @@ function useShowComponent(Component) {
 
   // Optional props to pass from showWith component
   // It acts somewhat as a makeshift state or context in this regard.
-  const [propsToPass, setPropsToPass] = useState();
 
-  const handleShow = () => {
+  const handleShow = callback => {
+    if (callback) {
+      callback();
+    }
     setIsShown(true);
   };
 
@@ -26,12 +28,7 @@ function useShowComponent(Component) {
   // The component to open, along with its props as an object
   function showComponent(props) {
     return (
-      <Component
-        isShown={isShown}
-        handleUnshow={handleUnshow}
-        {...props}
-        {...propsToPass}
-      />
+      <Component isShown={isShown} handleUnshow={handleUnshow} {...props} />
     );
   }
 
@@ -42,11 +39,11 @@ function useShowComponent(Component) {
 
   // For versatility:
   // Pass 'null' to clickToShow and the component can be passed as a normal onClick handler
-  function showComponentWith(clickToShow) {
+  function showComponentWith(clickToShow, callback) {
     if (!clickToShow) {
-      return handleShow();
+      return handleShow(callback);
     }
-    return <div onClick={() => handleShow()}>{clickToShow}</div>;
+    return <div onClick={() => handleShow(callback)}>{clickToShow}</div>;
   }
 
   return [showComponent, showComponentWith];
