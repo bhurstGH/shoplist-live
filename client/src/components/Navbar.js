@@ -32,11 +32,13 @@ function Navbar(props) {
             ShopList Live
           </Typography>
           {currentUser && (
-            <UserMenu currentUser={currentUser} setCurrentUser={setCurrentUser}>
-              {showAddConnectionWith("Add Connection")}
-              <Logout setCurrentUser={setCurrentUser}>Logout</Logout>
-            </UserMenu>
+            <UserMenu
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+              showAddConnectionWith={showAddConnectionWith}
+            />
           )}
+
           {showAddConnection()}
         </Toolbar>
       </AppBar>

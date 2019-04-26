@@ -16,7 +16,7 @@ import { addNewList } from "../../js/listHelpers";
 const styles = theme => ({});
 
 function AddList(props) {
-  const { currentUser, socket, open, handleClose } = props;
+  const { currentUser, socket, isShown, handleUnshow } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -39,16 +39,16 @@ function AddList(props) {
     addNewList(socket, listInfo, (msg, variant) => {
       enqueueSnackbar(msg, { variant });
       if (variant === "success") {
-        handleClose();
+        handleUnshow();
       }
     });
   };
 
   return (
     <React.Fragment>
-      <form onSubmit={handleSubmit}>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>New List</DialogTitle>
+      <Dialog open={isShown} onClose={handleUnshow}>
+        <DialogTitle>New List</DialogTitle>
+        <form onSubmit={handleSubmit}>
           <DialogContent>
             <TextField
               autoFocus
@@ -63,15 +63,15 @@ function AddList(props) {
             <ConnectionList output={members} setOutput={setMembers} />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleUnshow} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">
               Confirm
             </Button>
           </DialogActions>
-        </Dialog>
-      </form>
+        </form>
+      </Dialog>
     </React.Fragment>
   );
 }
@@ -79,7 +79,9 @@ function AddList(props) {
 AddList.propTypes = {
   classes: PropTypes.object.isRequired,
   currentUser: PropTypes.object.isRequired,
-  socket: PropTypes.object.isRequired
+  socket: PropTypes.object.isRequired,
+  isShown: PropTypes.bool.isRequired,
+  handleUnshow: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(AddList);

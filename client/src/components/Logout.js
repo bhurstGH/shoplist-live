@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSnackbar } from "notistack";
 import { userLogout } from "../js/userHelpers";
 
-const Logout = props => {
-  const { children, setCurrentUser } = props;
+import { UserContext } from "../App";
+
+function Logout(props) {
+  const { children } = props;
+
+  const [setCurrentUser] = useContext(UserContext);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -15,6 +19,6 @@ const Logout = props => {
   };
 
   return <div onClick={handleLogout}>{children}</div>;
-};
+}
 
 export default Logout;

@@ -20,12 +20,36 @@ export function addNewList(socket, newList, callback) {
 
 export function getLists(socket, userId, callback) {
   socket.emit("GET_LISTS", userId, (err, listPayload) => {
+    if (err) {
+      return console.log(err);
+    }
     callback(listPayload);
   });
 }
 
 export function deleteList(socket, listId, callback) {
-  socket.emit("DELETE_LIST", listId);
+  socket.emit("DELETE_LIST", listId, (err, success) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(success);
+    }
+  });
+}
+
+export function openList(socket, listId, callback) {
+  socket.emit("OPEN_LIST", listId, (err, listPayload) => {
+    if (err) {
+      console.log(err);
+    }
+    callback(listPayload);
+  });
+}
+
+export function closeList(socket, listId, callback) {
+  socket.emit("CLOSE_LIST", listId, () => {
+    callback();
+  });
 }
 
 // *******

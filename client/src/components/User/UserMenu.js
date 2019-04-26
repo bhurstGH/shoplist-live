@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Menu, MenuItem, Button } from "@material-ui/core";
+import Logout from "../Logout";
 
 function UserMenu(props) {
-  const { children, currentUser } = props;
+  const { children, currentUser, showAddConnectionWith } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -21,11 +22,7 @@ function UserMenu(props) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        {children.map((child, index) => (
-          <MenuItem key={index} onClick={() => setAnchorEl(null)}>
-            {child}
-          </MenuItem>
-        ))}
+        <MenuItem onClick={() => setAnchorEl(null)}>Logout</MenuItem>
       </Menu>
     </div>
   );

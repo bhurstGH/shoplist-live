@@ -40,8 +40,6 @@ function ConnectionList(props) {
 
   // Update parent's hooks
   const handleChange = e => {
-    console.log(e.target.value);
-    console.log(e.currentTarget);
     setOutput(e.target.value);
   };
 

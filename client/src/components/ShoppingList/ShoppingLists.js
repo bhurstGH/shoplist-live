@@ -15,6 +15,7 @@ import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
 import { getLists, deleteList } from "../../js/listHelpers";
 import io from "socket.io-client";
+import ShoppingList from "./ShoppingList";
 import useShowComponent from "../util/useShowComponent";
 
 const styles = theme => ({
@@ -38,22 +39,20 @@ const styles = theme => ({
 function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
-  const { current: socket } = useRef(
-    io("/socketlists", { autoConnect: false })
-  );
+  const { current: socket } = useRef(io("/socketlists"));
 
   const [showAddList, showAddListWith] = useShowComponent(AddList);
+  const [showShoppingList, showShoppingListWith] = useShowComponent(
+    ShoppingList
+  );
 
   const [lists, setLists] = useState([]);
   // const [expandList, setExpandList] = useState();
 
   useEffect(() => {
-    socket.open();
-
     getLists(socket, currentUser.id, setLists);
 
     socket.on("NEW_LIST", listsPayload => {
-      console.log(listsPayload);
       setLists(prevLists => [...prevLists, listsPayload]);
     });
 
@@ -62,15 +61,19 @@ function ShoppingLists(props) {
     };
   }, []);
 
-  const handleDelete = listId => {
+  const handleDelete = (e, listId) => {
+    e.stopPropagation();
     deleteList(socket, listId);
     getLists(socket, currentUser.id, setLists);
   };
 
+  const handleClick = list => {
+    showShoppingListWith(null, { list });
+  };
   return (
     <Paper className={classes.paper}>
       <div className={classes.addButton}>
-        {showAddList({ currentUser: currentUser, socket: socket })}
+        {showAddList({ currentUser, socket })}
         {showAddListWith(
           <Button variant="contained" color="primary" size="small">
             Add List
@@ -82,17 +85,18 @@ function ShoppingLists(props) {
         subheader={<ListSubheader>{currentUser.name}'s Lists</ListSubheader>}
       >
         {lists.map(list => (
-          <ListItem key={list._id}>
+          <ListItem key={list._id} button onClick={() => handleClick(list)}>
             <ListItemText
               primary={list.name}
               secondary={`${list.members.length} list members`}
             />
-            <IconButton onClick={() => handleDelete(list._id)}>
+            <IconButton onClick={e => handleDelete(e, list._id)}>
               <Clear />
             </IconButton>
           </ListItem>
         ))}
       </List>
+      {showShoppingList({ currentUser, socket })}
     </Paper>
   );
 }

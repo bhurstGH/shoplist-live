@@ -4,28 +4,49 @@ import PropTypes from "prop-types";
 // Custom hook used for opening a component
 // i.e. a dialog
 // Component is the target component to open
-// This must utilize an "open" and "handleClose" prop
+
+// Component must utilize an 'isShown and "handleUnshow" prop
 
 function useShowComponent(Component) {
-  const [isOpen, setIsOpen] = useState(false);
+  // Boolean to toggle open state
+  const [isShown, setIsShown] = useState(false);
 
-  const handleOpen = e => {
-    setIsOpen(true);
+  // Optional props to pass from showWith component
+  // It acts somewhat as a makeshift state or context in this regard.
+  const [propsToPass, setPropsToPass] = useState();
+
+  const handleShow = () => {
+    setIsShown(true);
   };
 
-  const handleClose = () => {
-    setIsOpen(false);
+  const handleUnshow = () => {
+    setIsShown(false);
   };
 
   // The component to open, along with its props as an object
   function showComponent(props) {
-    return <Component open={isOpen} handleClose={handleClose} {...props} />;
+    return (
+      <Component
+        isShown={isShown}
+        handleUnshow={handleUnshow}
+        {...props}
+        {...propsToPass}
+      />
+    );
   }
 
-  // clickToOpen represents anything (text, button, another component, etc)
+  // clickToShow represents anything (text, button, another component, etc)
   // It will be wrapped in a div that will launch Component on click
-  function showComponentWith(clickToOpen) {
-    return <div onClick={handleOpen}>{clickToOpen}</div>;
+
+  // propsObject: optional props you can pass as the 2nd argument of showWith.
+
+  // For versatility:
+  // Pass 'null' to clickToShow and the component can be passed as a normal onClick handler
+  function showComponentWith(clickToShow) {
+    if (!clickToShow) {
+      return handleShow();
+    }
+    return <div onClick={() => handleShow()}>{clickToShow}</div>;
   }
 
   return [showComponent, showComponentWith];

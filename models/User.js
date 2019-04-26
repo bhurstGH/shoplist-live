@@ -66,10 +66,6 @@ userSchema.statics.addListToUsers = async function(idArray, listId) {
       member.lists.addToSet(listId);
       member.save();
     });
-  // listMembers.forEach(member => {
-  //   member.lists.addToSet(listId);
-  //   member.save();
-  // });
 };
 
 userSchema.statics.removeListFromUsers = function(id) {};

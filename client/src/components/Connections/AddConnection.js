@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import {
   Dialog,
@@ -11,7 +12,7 @@ import {
 import { connectionAdd } from "../../js/connectionHelpers";
 
 function AddConnection(props) {
-  const { open, handleClose } = props;
+  const { isShown, handleUnshow } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -23,7 +24,7 @@ function AddConnection(props) {
     enqueueSnackbar(msg, { variant });
     setEmailConnection({ email: "" });
     if (variant === "success") {
-      handleClose();
+      handleUnshow();
     }
   };
 
@@ -33,7 +34,7 @@ function AddConnection(props) {
 
   return (
     <React.Fragment>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={isShown} onClose={handleUnshow}>
         <DialogTitle>Add connections to share lists</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
@@ -51,7 +52,7 @@ function AddConnection(props) {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleUnshow} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">
@@ -63,5 +64,10 @@ function AddConnection(props) {
     </React.Fragment>
   );
 }
+
+AddConnection.propTypes = {
+  isShown: PropTypes.bool.isRequired,
+  handleUnshow: PropTypes.func.isRequired
+};
 
 export default AddConnection;
