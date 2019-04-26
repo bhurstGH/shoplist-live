@@ -84,7 +84,11 @@ function ShoppingLists(props) {
         subheader={<ListSubheader>{currentUser.name}'s Lists</ListSubheader>}
       >
         {lists.map(list => (
-          <ListItem key={list._id} button onClick={() => handleClick(list)}>
+          <ListItem
+            key={list._id}
+            button
+            onClick={() => showShoppingListWith(null)}
+          >
             <ListItemText
               primary={list.name}
               secondary={`${list.members.length} list members`}
