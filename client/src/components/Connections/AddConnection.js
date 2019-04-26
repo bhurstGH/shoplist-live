@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useSnackbar } from "notistack";
 import {
   Dialog,
@@ -9,14 +10,11 @@ import {
   TextField
 } from "@material-ui/core";
 import { connectionAdd } from "../../js/connectionHelpers";
-import { ShowDialog } from "../util/ShowDialog";
 
 function AddConnection(props) {
-  const { children } = props;
+  const { isShown, handleUnshow } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const [connection, setEmailConnection] = useState({ email: "" });
 
@@ -26,7 +24,7 @@ function AddConnection(props) {
     enqueueSnackbar(msg, { variant });
     setEmailConnection({ email: "" });
     if (variant === "success") {
-      setIsOpen(false);
+      handleUnshow();
     }
   };
 
@@ -36,8 +34,7 @@ function AddConnection(props) {
 
   return (
     <React.Fragment>
-      <ShowDialog openDialog={setIsOpen}>{children}</ShowDialog>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isShown} onClose={handleUnshow}>
         <DialogTitle>Add connections to share lists</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
@@ -55,7 +52,7 @@ function AddConnection(props) {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setIsOpen(false)} color="primary">
+            <Button onClick={handleUnshow} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">
@@ -67,5 +64,10 @@ function AddConnection(props) {
     </React.Fragment>
   );
 }
+
+AddConnection.propTypes = {
+  isShown: PropTypes.bool.isRequired,
+  handleUnshow: PropTypes.func.isRequired
+};
 
 export default AddConnection;

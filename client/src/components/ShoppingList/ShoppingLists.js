@@ -9,15 +9,14 @@ import {
   ListSubheader,
   ListItem,
   ListItemText,
-  Divider,
-  Collapse
+  Divider
 } from "@material-ui/core";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
-import { getLists } from "../../js/listHelpers";
+import { getLists, deleteList } from "../../js/listHelpers";
 import io from "socket.io-client";
+import ShoppingList from "./ShoppingList";
+import useShowComponent from "../util/useShowComponent";
 
 const styles = theme => ({
   paper: {
@@ -40,62 +39,72 @@ const styles = theme => ({
 function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
+<<<<<<< HEAD
   const { current: socket } = useRef(
     io("/socketlists", { autoConnect: false })
+=======
+  const { current: socket } = useRef(io("/socketlists"));
+
+  const [showAddList, showAddListWith] = useShowComponent(AddList);
+  const [showShoppingList, showShoppingListWith] = useShowComponent(
+    ShoppingList
+>>>>>>> dev
   );
 
   const [lists, setLists] = useState([]);
-  const [listExpanded, setListExpanded] = useState({});
 
   useEffect(() => {
-    socket.open();
-
     getLists(socket, currentUser.id, setLists);
-    // socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
-    //   setLists(listPayload);
-    // });
-    socket.on("NEW_LIST", listsPayload => {
-      console.log(listsPayload);
 
+    socket.on("NEW_LIST", listsPayload => {
       setLists(prevLists => [...prevLists, listsPayload]);
     });
+
     return () => {
       socket.close();
     };
   }, []);
 
-  const deleteList = listId => {
-    socket.emit("DELETE_LIST", listId);
-    socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
-      setLists(listPayload);
-    });
+  const handleDelete = (e, listId) => {
+    e.stopPropagation();
+    deleteList(socket, listId);
+    getLists(socket, currentUser.id, setLists);
   };
 
+  const handleClick = list => {
+    showShoppingListWith(null, { list });
+  };
   return (
     <Paper className={classes.paper}>
       <div className={classes.addButton}>
-        <AddList currentUser={currentUser} socket={socket}>
+        {showAddList({ currentUser, socket })}
+        {showAddListWith(
           <Button variant="contained" color="primary" size="small">
             Add List
           </Button>
-        </AddList>
+        )}
       </div>
       <Divider />
       <List
         subheader={<ListSubheader>{currentUser.name}'s Lists</ListSubheader>}
       >
         {lists.map(list => (
-          <ListItem key={list._id} button>
+          <ListItem
+            key={list._id}
+            button
+            onClick={() => showShoppingListWith(null)}
+          >
             <ListItemText
               primary={list.name}
               secondary={`${list.members.length} list members`}
             />
-            <IconButton onClick={() => deleteList(list._id)}>
+            <IconButton onClick={e => handleDelete(e, list._id)}>
               <Clear />
             </IconButton>
           </ListItem>
         ))}
       </List>
+      {showShoppingList({ currentUser, socket })}
     </Paper>
   );
 }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { useSnackbar } from "notistack";
 import { Paper, TextField, Button } from "@material-ui/core";
-import { userRegister } from "../js/userHelpers";
+import { userRegister } from "../../js/userHelpers";
 
 const styles = theme => ({
   paper: {
@@ -35,9 +35,10 @@ function Register(props) {
     confirmpass: ""
   });
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
+    console.log("test");
     e.preventDefault();
-    const { msg, variant } = await userRegister(userInput, setLoginToggle);
+    const { msg, variant } = userRegister(userInput, setLoginToggle);
     enqueueSnackbar(msg, { variant });
   };
 

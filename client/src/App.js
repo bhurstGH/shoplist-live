@@ -1,21 +1,22 @@
-import React, { useState, useEffect, useRef, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
+<<<<<<< HEAD
 import UserPage from "./components/User/UserPage";
 import Login from "./components/Login";
 import Register from "./components/Register";
 // import io from "socket.io-client";
+=======
+import ShoppingLists from "./components/ShoppingList/ShoppingLists";
+import Login from "./components/User/Login";
+import Register from "./components/User/Register";
+>>>>>>> dev
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
 
 function App() {
-  // Open socket with useRef so that it persists through renders
-  // const { current: socket } = useRef(io("http://localhost:5000/user"));
-
-  // User hook for client side auth
-  // Check session storage to persist user state
   const [currentUser, setCurrentUser] = useState(() => {
     const storedUser = sessionStorage.length
       ? {
@@ -27,16 +28,13 @@ function App() {
     return storedUser;
   });
 
-  // useEffect(() => {
-  //   socket.open();
-  //   socket.emit("CHECK_SESSION", data => {
-  //     console.log(data);
-  //   });
-
-  //   return () => {
-  //     socket.close();
-  //   };
-  // });
+  useEffect(() => {
+    if (currentUser) {
+      sessionStorage.setItem("name", currentUser.name);
+      sessionStorage.setItem("email", currentUser.email);
+      sessionStorage.setItem("id", currentUser.id);
+    }
+  }, [currentUser]);
 
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);
@@ -45,7 +43,7 @@ function App() {
   // If not, load the login and/or register forms.
   const isLoggedIn = () => {
     if (currentUser) {
-      return <UserPage currentUser={currentUser} />;
+      return <ShoppingLists currentUser={currentUser} />;
     } else {
       return loginToggle ? (
         <Login setLoginToggle={setLoginToggle} />

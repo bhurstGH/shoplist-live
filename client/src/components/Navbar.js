@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import useShowComponent from "./util/useShowComponent";
 import UserMenu from "../components/User/UserMenu";
+import AddConnection from "./Connections/AddConnection";
 
 const styles = theme => ({
   root: {
@@ -17,6 +19,10 @@ const styles = theme => ({
 function Navbar(props) {
   const { classes, currentUser, setCurrentUser } = props;
 
+  const [showAddConnection, showAddConnectionWith] = useShowComponent(
+    AddConnection
+  );
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -28,8 +34,11 @@ function Navbar(props) {
             <UserMenu
               currentUser={currentUser}
               setCurrentUser={setCurrentUser}
+              showAddConnectionWith={showAddConnectionWith}
             />
           )}
+
+          {showAddConnection()}
         </Toolbar>
       </AppBar>
     </div>

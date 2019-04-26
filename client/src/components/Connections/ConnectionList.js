@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  Button,
   Select,
   Input,
   FormControl,
@@ -15,13 +14,16 @@ import { getConnections } from "../../js/connectionHelpers";
 
 // Comonent that displays connections in a select menu with checkboxes
 // Will feed selected connections as an array to parent
-// output, setOutput props = parent's useState hook
+// output and setOutput props are the parent's useState hook
 
 const styles = theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
     width: 240
+  },
+  button: {
+    alignSelf: "flex-end"
   }
 });
 
@@ -39,10 +41,6 @@ function ConnectionList(props) {
   // Update parent's hooks
   const handleChange = e => {
     setOutput(e.target.value);
-  };
-
-  const handleMenu = e => {
-    setIsOpen(!isOpen);
   };
 
   // Should eventually be refactored for more flexibility
@@ -76,5 +74,10 @@ function ConnectionList(props) {
     </div>
   );
 }
+
+ConnectionList.propTypes = {
+  output: PropTypes.array.isRequired,
+  setOutput: PropTypes.func.isRequired
+};
 
 export default withStyles(styles)(ConnectionList);

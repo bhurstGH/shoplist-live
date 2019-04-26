@@ -7,7 +7,8 @@ const User = require("../models/User");
 module.exports = io => {
   const listsIO = io.of("/socketlists");
 
-  listsIO.on("connection", socket => {
+  listsIO.once("connection", socket => {
+    console.log(`${socket.id} has connected to socketlists namespace`);
     // Create a new list
     socket.on("NEW_LIST", (listInfo, res) => {
       const { userId, name, members } = listInfo;
@@ -31,29 +32,6 @@ module.exports = io => {
           res(err, false);
         });
     });
-
-    // *******
-    //  Create and add a new list to DB
-    // router.post("/lists", (req, res) => {
-    //   const { name, members } = req.body;
-
-    //   // Push list creator into list members
-    //   members.push(req.user._id);
-
-    //   ShoppingList.create({
-    //     name,
-    //     members
-    //   })
-    //     .then(list => {
-    //       console.log(`New list created`);
-    //       res.status(200).end();
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //       res.status(400).end();
-    //     });
-    // });
-    // *******
 
     // Retrieve lists for logged in user
 
@@ -79,6 +57,24 @@ module.exports = io => {
         })
         .catch(err => {
           console.log(err);
+        });
+    });
+
+    // Get list items
+
+    socket.on("OPEN_LIST", (listId, res) => {
+      socket.join(listId, () => {
+        console.log(`${socket.id} joined room ${listId}`);
+      });
+
+      ShoppingList.findById(listId)
+        .then(list => {
+          console.log(list);
+          res(null, list);
+        })
+        .catch(err => {
+          console.log(err);
+          res(err, null);
         });
     });
   });

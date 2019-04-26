@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { Menu, MenuItem, Button } from "@material-ui/core";
 import { useSnackbar } from "notistack";
 import { userLogout } from "../../js/userHelpers";
-import { Menu, MenuItem, Button } from "@material-ui/core";
-import AddConnection from "../Connections/AddConnection";
 
 function UserMenu(props) {
-  const { currentUser, setCurrentUser } = props;
+  const { currentUser, setCurrentUser, showAddConnectionWith } = props;
 
   const { enqueueSnackbar } = useSnackbar();
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = async () => {
@@ -31,12 +29,11 @@ function UserMenu(props) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <AddConnection>
-          {/* Wrap MenuItem inside AddConnection.
-          This ensures the entire element can be 
-          clicked to open the dialog */}
-          <MenuItem>Add Connections</MenuItem>
-        </AddConnection>
+        <MenuItem
+          onClick={() => showAddConnectionWith(null, () => setAnchorEl(null))}
+        >
+          Add Connection
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
@@ -44,8 +41,7 @@ function UserMenu(props) {
 }
 
 UserMenu.propTypes = {
-  currentUser: PropTypes.object.isRequired,
-  setCurrentUser: PropTypes.func.isRequired
+  currentUser: PropTypes.object.isRequired
 };
 
 export default UserMenu;
