@@ -48,6 +48,7 @@ export function userLogout() {
       return { msg: "Logout failed", variant: "error" };
     });
 }
+
 export function getUser() {
   return axios
     .get("/user")

@@ -9,14 +9,11 @@ import {
   ListSubheader,
   ListItem,
   ListItemText,
-  Divider,
-  Collapse
+  Divider
 } from "@material-ui/core";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
-import { getLists } from "../../js/listHelpers";
+import { getLists, deleteList } from "../../js/listHelpers";
 import io from "socket.io-client";
 import useShowComponent from "../util/useShowComponent";
 
@@ -42,36 +39,32 @@ function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
   const { current: socket } = useRef(
-    io("http://localhost:3000/socketlists", { autoConnect: false })
+    io("/socketlists", { autoConnect: false })
   );
 
   const [showAddList, showAddListWith] = useShowComponent(AddList);
 
   const [lists, setLists] = useState([]);
-  const [listExpanded, setListExpanded] = useState({});
+  // const [expandList, setExpandList] = useState();
 
   useEffect(() => {
     socket.open();
 
     getLists(socket, currentUser.id, setLists);
-    // socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
-    //   setLists(listPayload);
-    // });
+
     socket.on("NEW_LIST", listsPayload => {
       console.log(listsPayload);
-
       setLists(prevLists => [...prevLists, listsPayload]);
     });
+
     return () => {
       socket.close();
     };
   }, []);
 
-  const deleteList = listId => {
-    socket.emit("DELETE_LIST", listId);
-    socket.emit("GET_LISTS", currentUser.id, (err, listPayload) => {
-      setLists(listPayload);
-    });
+  const handleDelete = listId => {
+    deleteList(socket, listId);
+    getLists(socket, currentUser.id, setLists);
   };
 
   return (
@@ -83,19 +76,18 @@ function ShoppingLists(props) {
             Add List
           </Button>
         )}
-        {/* </AddList> */}
       </div>
       <Divider />
       <List
         subheader={<ListSubheader>{currentUser.name}'s Lists</ListSubheader>}
       >
         {lists.map(list => (
-          <ListItem key={list._id} button>
+          <ListItem key={list._id}>
             <ListItemText
               primary={list.name}
               secondary={`${list.members.length} list members`}
             />
-            <IconButton onClick={() => deleteList(list._id)}>
+            <IconButton onClick={() => handleDelete(list._id)}>
               <Clear />
             </IconButton>
           </ListItem>

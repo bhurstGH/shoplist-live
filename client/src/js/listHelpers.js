@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export function checkListSuccess(err, list) {
   if (err) {
     console.log(err);
@@ -24,6 +22,10 @@ export function getLists(socket, userId, callback) {
   socket.emit("GET_LISTS", userId, (err, listPayload) => {
     callback(listPayload);
   });
+}
+
+export function deleteList(socket, listId, callback) {
+  socket.emit("DELETE_LIST", listId);
 }
 
 // *******

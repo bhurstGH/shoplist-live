@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
-  Button,
   Select,
   Input,
   FormControl,
@@ -46,10 +45,6 @@ function ConnectionList(props) {
     setOutput(e.target.value);
   };
 
-  const handleMenu = e => {
-    setIsOpen(!isOpen);
-  };
-
   // Should eventually be refactored for more flexibility
   // Currently only outputs as an input text field
   return (
@@ -76,13 +71,15 @@ function ConnectionList(props) {
               />
             </MenuItem>
           ))}
-          <Button className={classes.button} value="ok" type="submit">
-            Ok
-          </Button>
         </Select>
       </FormControl>
     </div>
   );
 }
+
+ConnectionList.propTypes = {
+  output: PropTypes.array.isRequired,
+  setOutput: PropTypes.func.isRequired
+};
 
 export default withStyles(styles)(ConnectionList);

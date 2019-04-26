@@ -6,6 +6,7 @@ const listItemSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  inCart: Boolean,
   purchased: Boolean
 });
 

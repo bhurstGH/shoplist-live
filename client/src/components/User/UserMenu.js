@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Menu, MenuItem, Button } from "@material-ui/core";
 
 function UserMenu(props) {
-  const { children, currentUser, setCurrentUser } = props;
+  const { children, currentUser } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -26,21 +26,13 @@ function UserMenu(props) {
             {child}
           </MenuItem>
         ))}
-        {/* <AddConnection>
-          Wrap MenuItem inside AddConnection.
-          This ensures the entire element can be 
-          clicked to open the dialog
-          <MenuItem>Add Connections</MenuItem>
-        </AddConnection>
-        <MenuItem onClick={handleLogout}>Logout</MenuItem> */}
       </Menu>
     </div>
   );
 }
 
 UserMenu.propTypes = {
-  currentUser: PropTypes.object.isRequired,
-  setCurrentUser: PropTypes.func.isRequired
+  currentUser: PropTypes.object.isRequired
 };
 
 export default UserMenu;

@@ -16,7 +16,7 @@ import { addNewList } from "../../js/listHelpers";
 const styles = theme => ({});
 
 function AddList(props) {
-  const { classes, currentUser, socket, open, handleClose } = props;
+  const { currentUser, socket, open, handleClose } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -29,6 +29,7 @@ function AddList(props) {
 
   const handleSubmit = async e => {
     e.preventDefault();
+
     const listInfo = {
       userId: currentUser.id,
       name: listName,
@@ -41,24 +42,16 @@ function AddList(props) {
         handleClose();
       }
     });
-    // socket.emit("NEW_LIST", listInfo, (err, list) => {
-    //   const { msg, variant } = checkListSuccess(err, list);
-    //   enqueueSnackbar(msg, { variant });
-    //   if (variant === "success") {
-    //     setIsOpen(false);
-    //   }
-    // });
   };
 
   return (
     <React.Fragment>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New List</DialogTitle>
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>New List</DialogTitle>
           <DialogContent>
             <TextField
               autoFocus
-              margin="normal"
               id="name"
               label="List Name"
               name="name"
@@ -67,8 +60,6 @@ function AddList(props) {
               fullWidth
               required
             />
-            {/* Delegates the member list out to
-            user's connections */}
             <ConnectionList output={members} setOutput={setMembers} />
           </DialogContent>
           <DialogActions>
@@ -79,8 +70,8 @@ function AddList(props) {
               Confirm
             </Button>
           </DialogActions>
-        </form>
-      </Dialog>
+        </Dialog>
+      </form>
     </React.Fragment>
   );
 }
