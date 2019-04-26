@@ -35,9 +35,10 @@ function Register(props) {
     confirmpass: ""
   });
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
+    console.log("test");
     e.preventDefault();
-    const { msg, variant } = await userRegister(userInput, setLoginToggle);
+    const { msg, variant } = userRegister(userInput, setLoginToggle);
     enqueueSnackbar(msg, { variant });
   };
 

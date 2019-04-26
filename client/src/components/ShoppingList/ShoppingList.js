@@ -6,6 +6,7 @@ import {
   DialogTitle,
   AppBar,
   Toolbar,
+  Button,
   IconButton,
   InputBase
 } from "@material-ui/core";
@@ -60,12 +61,26 @@ function ShoppingList(props) {
               variant="outlined"
               placeholder="Add item..."
             />
-            <IconButton className={classes.button} onClick={handleUnshow}>
+            <Button
+              className={classes.button}
+              color="inherit"
+              variant="outlined"
+            >
+              <AddIcon />
+            </Button>
+            <Button
+              className={classes.button}
+              color="inherit"
+              variant="outlined"
+            >
+              <PaymentIcon />
+            </Button>
+            {/* <IconButton className={classes.button} onClick={handleUnshow}>
               <AddIcon />
             </IconButton>
             <IconButton className={classes.button} onClick={handleUnshow}>
               <PaymentIcon />
-            </IconButton>
+            </IconButton> */}
           </Toolbar>
         </AppBar>
       </Dialog>

@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Menu, MenuItem, Button } from "@material-ui/core";
-import Logout from "../Logout";
+import { useSnackbar } from "notistack";
+import { userLogout } from "../../js/userHelpers";
 
 function UserMenu(props) {
-  const { children, currentUser, showAddConnectionWith } = props;
+  const { currentUser, setCurrentUser, showAddConnectionWith } = props;
 
+  const { enqueueSnackbar } = useSnackbar();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleLogout = async () => {
+    const { msg, variant } = await userLogout(setCurrentUser);
+    enqueueSnackbar(msg, { variant });
+    if (variant === "warning") {
+      setAnchorEl(null);
+    }
+  };
 
   return (
     <div>
@@ -22,7 +32,7 @@ function UserMenu(props) {
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem onClick={() => setAnchorEl(null)}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );

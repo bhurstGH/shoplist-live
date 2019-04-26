@@ -47,7 +47,6 @@ function ShoppingLists(props) {
   );
 
   const [lists, setLists] = useState([]);
-  // const [expandList, setExpandList] = useState();
 
   useEffect(() => {
     getLists(socket, currentUser.id, setLists);

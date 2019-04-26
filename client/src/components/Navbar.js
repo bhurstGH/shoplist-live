@@ -5,7 +5,6 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import useShowComponent from "./util/useShowComponent";
 import UserMenu from "../components/User/UserMenu";
 import AddConnection from "./Connections/AddConnection";
-import Logout from "./Logout";
 
 const styles = theme => ({
   root: {

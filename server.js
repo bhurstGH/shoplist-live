@@ -46,8 +46,8 @@ app.use(
   session({
     secret: "sllsecret",
     store: store,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: { maxAge: 1000 * 60 * 60 * 24 }
   })
 );

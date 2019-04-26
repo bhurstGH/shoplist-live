@@ -25,12 +25,11 @@ export function userLogin(userInput, setCurrentUser) {
         email: res.data.email,
         id: res.data.id
       });
-      sessionStorage.setItem("name", res.data.name);
-      sessionStorage.setItem("email", res.data.email);
-      sessionStorage.setItem("id", res.data.id);
+
       return { msg: `Logged in as ${res.data.name}`, variant: "success" };
     })
     .catch(err => {
+      console.log(err);
       return { msg: err.response.data.msg, variant: "error" };
     });
 }
@@ -38,10 +37,11 @@ export function userLogin(userInput, setCurrentUser) {
 // Makes call to logout
 // Sets currentUser state to null
 // Clears sessionStorage
-export function userLogout() {
+export function userLogout(setCurrentUser) {
   return axios
     .get("/users/logout")
     .then(res => {
+      setCurrentUser(null);
       return { msg: "Logged out", variant: "warning" };
     })
     .catch(err => {

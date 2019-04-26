@@ -1,42 +1,18 @@
-import React, { useState, useEffect, useRef, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
 import ShoppingLists from "./components/ShoppingList/ShoppingLists";
 import Login from "./components/Login";
 import Register from "./components/Register";
-// import io from "socket.io-client";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
 
 function App() {
-  // Open socket with useRef so that it persists through renders
-  // const { current: socket } = useRef(io("http://localhost:5000/user"));
-
-  // User hook for client side auth
-  // Check session storage to persist user state
   const [currentUser, setCurrentUser] = useState(() => {
-    const storedUser = sessionStorage.length
-      ? {
-          name: sessionStorage.getItem("name"),
-          email: sessionStorage.getItem("email"),
-          id: sessionStorage.getItem("id")
-        }
-      : null;
-    return storedUser;
+    const storedUser = {};
   });
-
-  // useEffect(() => {
-  //   socket.open();
-  //   socket.emit("CHECK_SESSION", data => {
-  //     console.log(data);
-  //   });
-
-  //   return () => {
-  //     socket.close();
-  //   };
-  // });
 
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);
