@@ -41,6 +41,7 @@ export function userLogout(setCurrentUser) {
   return axios
     .get("/users/logout")
     .then(res => {
+      sessionStorage.clear();
       setCurrentUser(null);
       return { msg: "Logged out", variant: "warning" };
     })
