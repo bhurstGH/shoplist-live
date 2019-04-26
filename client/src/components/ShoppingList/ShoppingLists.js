@@ -39,16 +39,11 @@ const styles = theme => ({
 function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
-<<<<<<< HEAD
-  const { current: socket } = useRef(
-    io("/socketlists", { autoConnect: false })
-=======
   const { current: socket } = useRef(io("/socketlists"));
 
   const [showAddList, showAddListWith] = useShowComponent(AddList);
   const [showShoppingList, showShoppingListWith] = useShowComponent(
     ShoppingList
->>>>>>> dev
   );
 
   const [lists, setLists] = useState([]);

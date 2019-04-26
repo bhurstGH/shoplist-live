@@ -16,11 +16,7 @@ import { addNewList } from "../../js/listHelpers";
 const styles = theme => ({});
 
 function AddList(props) {
-<<<<<<< HEAD
-  const { currentUser, socket, children } = props;
-=======
   const { currentUser, socket, isShown, handleUnshow } = props;
->>>>>>> dev
 
   const { enqueueSnackbar } = useSnackbar();
 

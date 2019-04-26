@@ -2,16 +2,9 @@ import React, { useState, useEffect, createContext } from "react";
 import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
-<<<<<<< HEAD
-import UserPage from "./components/User/UserPage";
-import Login from "./components/Login";
-import Register from "./components/Register";
-// import io from "socket.io-client";
-=======
 import ShoppingLists from "./components/ShoppingList/ShoppingLists";
 import Login from "./components/User/Login";
 import Register from "./components/User/Register";
->>>>>>> dev
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
