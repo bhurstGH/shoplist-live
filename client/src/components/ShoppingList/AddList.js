@@ -10,7 +10,7 @@ import {
   TextField
 } from "@material-ui/core";
 import { useSnackbar } from "notistack";
-import ConnectionList from "../Connections/ConnectionList";
+import ConnectionList from "../User/ConnectionList";
 import { addNewList } from "../../js/listHelpers";
 
 const styles = theme => ({});
@@ -39,6 +39,8 @@ function AddList(props) {
     addNewList(socket, listInfo, (msg, variant) => {
       enqueueSnackbar(msg, { variant });
       if (variant === "success") {
+        setListName("");
+        setMembers([]);
         handleUnshow();
       }
     });

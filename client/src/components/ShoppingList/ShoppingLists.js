@@ -39,7 +39,19 @@ const styles = theme => ({
 function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
-  const { current: socket } = useRef(io("/socketlists"));
+  const { current: socket } = useRef(
+    io("http://localhost:3000/socketlists", {
+      autoConnect: false,
+      reconnection: true,
+      rejectUnauthorized: false
+    })
+  );
+
+  // const socket = io("http://localhost:3000/socketlists", {
+  //   autoConnect: false,
+  //   reconnection: true,
+  //   rejectUnauthorized: false
+  // });
 
   const [showAddList, showAddListWith] = useShowComponent(AddList);
   const [showShoppingList, showShoppingListWith] = useShowComponent(
@@ -49,6 +61,7 @@ function ShoppingLists(props) {
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
+    socket.open();
     getLists(socket, currentUser.id, setLists);
 
     socket.on("NEW_LIST", listsPayload => {
@@ -67,8 +80,9 @@ function ShoppingLists(props) {
   };
 
   const handleClick = list => {
-    showShoppingListWith(null, { list });
+    showShoppingListWith(null);
   };
+
   return (
     <Paper className={classes.paper}>
       <div className={classes.addButton}>

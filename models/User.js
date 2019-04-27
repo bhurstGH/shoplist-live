@@ -43,45 +43,40 @@ userSchema.pre("save", function(next) {
   next();
 });
 
-userSchema.methods.comparePassword = function(plainpass, callback) {
-  return callback(null, bcrypt.compareSync(plainpass, this.password));
-};
+userSchema.methods = {
+  comparePassword: function(plainpass, callback) {
+    return callback(null, bcrypt.compareSync(plainpass, this.password));
+  },
+  addList: function(id) {
+    // Add list to user.
+    if (this.lists === null) {
+      return (this.lists = [id]);
+    }
 
-// Add list to user.
-userSchema.method.addList = function(id) {
-  if (this.lists === null) {
-    return (this.lists = [id]);
+    return this.lists.addToSet(id);
+  },
+  addConnection: function(id) {
+    // Add a connection
+    if (this.connections === null) {
+      return (this.connections = [id]);
+    }
+
+    return this.connections.addToSet(id);
   }
-
-  return this.lists.addToSet(id);
 };
 
-// Add listId to users in idArray
-userSchema.statics.addListToUsers = async function(idArray, listId) {
-  const listMembers = await User.find()
-    .where("_id")
-    .in(idArray)
-    .cursor()
-    .on("data", function(member) {
-      member.lists.addToSet(listId);
-      member.save();
-    });
-};
-
-userSchema.statics.removeListFromUsers = function(id) {};
-
-// Add a connection
-userSchema.methods.addConnection = function(id) {
-  if (this.connections === null) {
-    return (this.connections = [id]);
+userSchema.statics = {
+  addListToUsers: async function(idArray, listId) {
+    // Add listId to users in idArray
+    const listMembers = await User.find()
+      .where("_id")
+      .in(idArray)
+      .cursor()
+      .on("data", function(member) {
+        member.lists.addToSet(listId);
+        member.save();
+      });
   }
-
-  return this.connections.addToSet(id);
-};
-
-// Get connections, returning only the id, email, and name to the client
-userSchema.query.getConnections = function() {
-  return this.select("connections").populate("connections", "email name");
 };
 
 userSchema.query.getLists = function() {
@@ -89,6 +84,11 @@ userSchema.query.getLists = function() {
     path: "lists",
     populate: { path: "members", select: "email name" }
   });
+};
+
+userSchema.query.getConnections = function() {
+  // Get connections, returning only the id, email, and name to the client
+  return this.select("connections").populate("connections", "email name");
 };
 
 const User = mongoose.model("User", userSchema);

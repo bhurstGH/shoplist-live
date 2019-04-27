@@ -21,13 +21,13 @@ function App() {
     return storedUser;
   });
 
-  useEffect(() => {
-    if (currentUser) {
-      sessionStorage.setItem("name", currentUser.name);
-      sessionStorage.setItem("email", currentUser.email);
-      sessionStorage.setItem("id", currentUser.id);
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     sessionStorage.setItem("name", currentUser.name);
+  //     sessionStorage.setItem("email", currentUser.email);
+  //     sessionStorage.setItem("id", currentUser.id);
+  //   }
+  // }, [currentUser]);
 
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);

@@ -1,12 +1,12 @@
 require("dotenv").config();
 const express = require("express");
+const app = express();
 const session = require("express-session");
+const passportConfig = require("./config/passportConfig");
 const mongoose = require("mongoose");
-const passport = require("passport");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const path = require("path");
 
-const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
@@ -16,9 +16,6 @@ const store = new MongoDBStore({
 });
 
 store.on("error", err => console.log(err));
-
-// Pass passport to passport config file.
-require("./config/passport")(passport);
 
 // Express' built in Body-Parser middleware replacement
 // Appends a body object on the request object as JSON.
@@ -47,17 +44,15 @@ app.use(
     secret: "sllsecret",
     store: store,
     resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }
+    saveUninitialized: false
   })
 );
 
-// Passport
-app.use(passport.initialize());
-app.use(passport.session());
+// Initialize passport after session
+passportConfig(app);
 
 // Routes
-require("./config/routes")(app, io);
+require("./config/routesConfig")(app, io);
 
 //Serve static assets from client if in production
 if (process.env.NODE_ENV === "production") {

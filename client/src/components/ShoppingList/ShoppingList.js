@@ -17,13 +17,13 @@ import { openList } from "../../js/listHelpers";
 
 const styles = theme => ({
   bottomAppBar: {
-    display: "flex",
-    justifyContent: "center",
     top: "auto",
     bottom: 0
   },
   toolbar: {
-    padding: 0
+    padding: 0,
+    display: "flex",
+    justifyContent: "flex-end"
   },
   contrastText: {
     color: theme.palette.primary.contrastText
