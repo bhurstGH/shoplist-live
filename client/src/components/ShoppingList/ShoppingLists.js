@@ -40,7 +40,7 @@ function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
   const { current: socket } = useRef(
-    io("http://localhost:3000/socketlists", {
+    io("socketlists", {
       autoConnect: false,
       reconnection: true,
       rejectUnauthorized: false
