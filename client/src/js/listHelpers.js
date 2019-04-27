@@ -12,7 +12,6 @@ export function checkListSuccess(err, list) {
 }
 
 export function addNewList(socket, newList, callback) {
-  console.log("^^^^^^^^^^^^^^^^^^");
   socket.emit("NEW_LIST", newList, (err, list) => {
     const { msg, variant, payload } = checkListSuccess(err, list);
     callback(msg, variant, payload);
@@ -21,7 +20,6 @@ export function addNewList(socket, newList, callback) {
 
 export function getLists(socket, userId, callback) {
   socket.emit("GET_LISTS", userId, (err, listPayload) => {
-    console.log("$$$$$$$$$$$$$$$$$");
     if (err) {
       return console.log(err);
     }

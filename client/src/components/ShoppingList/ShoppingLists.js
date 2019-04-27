@@ -56,9 +56,8 @@ function ShoppingLists(props) {
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
-    socket.open(console.log("Connected"));
+    socket.open();
     getLists(socket, currentUser.id, setLists);
-    console.log("######" + socket);
 
     socket.on("NEW_LIST", listsPayload => {
       setLists(prevLists => [...prevLists, listsPayload]);

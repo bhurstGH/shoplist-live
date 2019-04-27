@@ -16,7 +16,7 @@ import { addNewList } from "../../js/listHelpers";
 const styles = theme => ({});
 
 function AddList(props) {
-  const { currentUser, socket, isShown, handleUnshow } = props;
+  const { currentUser, socket, isShown, handleShow } = props;
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -41,14 +41,14 @@ function AddList(props) {
       if (variant === "success") {
         setListName("");
         setMembers([]);
-        handleUnshow();
+        handleShow();
       }
     });
   };
 
   return (
     <React.Fragment>
-      <Dialog open={isShown} onClose={handleUnshow}>
+      <Dialog open={isShown} onClose={handleShow}>
         <DialogTitle>New List</DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent>
@@ -65,7 +65,7 @@ function AddList(props) {
             <ConnectionList output={members} setOutput={setMembers} />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleUnshow} color="primary">
+            <Button onClick={handleShow} color="primary">
               Cancel
             </Button>
             <Button type="submit" color="primary">
@@ -83,7 +83,7 @@ AddList.propTypes = {
   currentUser: PropTypes.object.isRequired,
   socket: PropTypes.object.isRequired,
   isShown: PropTypes.bool.isRequired,
-  handleUnshow: PropTypes.func.isRequired
+  handleShow: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(AddList);

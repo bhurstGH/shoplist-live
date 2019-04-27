@@ -53,9 +53,20 @@ export function userLogout(setCurrentUser) {
     });
 }
 
-export function getUser() {
+export function getUser(setCurrentUser) {
   return axios
     .get("/user")
-    .then()
-    .catch();
+    .then(res => {
+      setCurrentUser({
+        name: res.data.name,
+        email: res.data.email,
+        id: res.data.id
+      });
+      sessionStorage.setItem("name", res.data.name);
+      sessionStorage.setItem("email", res.data.email);
+      sessionStorage.setItem("id", res.data.id);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }

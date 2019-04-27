@@ -9,6 +9,7 @@ module.exports = io => {
 
   listsIO.on("connection", socket => {
     console.log(`${socket.id} has connected to socketlists namespace`);
+
     // Create a new list
     socket.on("NEW_LIST", (listInfo, res) => {
       console.log("@@@@@@@@@@@@@");

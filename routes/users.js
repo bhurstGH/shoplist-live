@@ -4,6 +4,18 @@ const passport = require("passport");
 
 const User = require("../models/User");
 
+// Check for user
+router.get("/user", (req, res) => {
+  console.log(req.user, "USER");
+  if (req.user) {
+    res
+      .status(200)
+      .json({ name: req.user.name, email: req.user.email, id: req.user._id });
+  } else {
+    res.json(null);
+  }
+});
+
 // Log user in
 router.post(
   "/users/login",
@@ -117,7 +129,6 @@ router.get("/users/connections", (req, res) => {
 // Logout user out
 router.get("/users/logout", (req, res) => {
   req.logout();
-  req.session.destroy();
   console.log("Logout Success");
   res.json(null);
 });

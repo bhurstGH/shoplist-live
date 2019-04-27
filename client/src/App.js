@@ -5,29 +5,29 @@ import Navbar from "./components/Navbar";
 import ShoppingLists from "./components/ShoppingList/ShoppingLists";
 import Login from "./components/User/Login";
 import Register from "./components/User/Register";
+import { getUser } from "./js/userHelpers";
+import useShowComponent from "./components/util/useShowComponent";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(() => {
-    const storedUser = sessionStorage.length
-      ? {
-          name: sessionStorage.getItem("name"),
-          email: sessionStorage.getItem("email"),
-          id: sessionStorage.getItem("id")
-        }
-      : null;
-    return storedUser;
+  const [currentUser, setCurrentUser] = useState(prevUser => {
+    if (sessionStorage.length > 0) {
+      const sessionUser = {
+        name: sessionStorage.getItem("name"),
+        email: sessionStorage.getItem("email"),
+        id: sessionStorage.getItem("id")
+      };
+      return sessionUser;
+    } else {
+      return null;
+    }
   });
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     sessionStorage.setItem("name", currentUser.name);
-  //     sessionStorage.setItem("email", currentUser.email);
-  //     sessionStorage.setItem("id", currentUser.id);
-  //   }
-  // }, [currentUser]);
+  useEffect(() => {
+    getUser(setCurrentUser);
+  }, []);
 
   // Toggle between Login and Register forms
   const [loginToggle, setLoginToggle] = useState(true);

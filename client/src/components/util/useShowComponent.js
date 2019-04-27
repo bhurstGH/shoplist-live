@@ -5,23 +5,20 @@ import PropTypes from "prop-types";
 // i.e. a dialog
 // Component is the target component to open
 
-// Component must utilize an 'isShown and "handleUnshow" prop
+// Component must utilize an 'isShown and "handleShow" prop
 
-function useShowComponent(Component) {
+function useShowComponent(Component, showComeponentCallback) {
   // Boolean to toggle open state
   const [isShown, setIsShown] = useState(false);
   const [passedProps, setPassedProps] = useState({});
+  const [showCondition, setShowCondition] = useState();
+  const [propertyNames, setPropertyNames] = useState({
+    show: "isShown",
+    handler: "handleShow"
+  });
 
   // Optional props to pass from showWith component
   // It acts somewhat as a makeshift state or context in this regard.
-
-  // const handleShow = (callback, propsToPass) => {
-  //   if (callback) {
-  //     callback();
-  //   }
-  //   setPassedProps(propsToPass);
-  //   setIsShown(true);
-  // };
 
   const handleUnshow = () => {
     setPassedProps({});
@@ -33,7 +30,7 @@ function useShowComponent(Component) {
     return (
       <Component
         isShown={isShown}
-        handleUnshow={handleUnshow}
+        handleShow={handleUnshow}
         {...props}
         {...passedProps}
       />
@@ -49,10 +46,13 @@ function useShowComponent(Component) {
       setIsShown(true);
     }
 
+    function showThis() {
+      return <span onClick={() => showWith()}>{callback()}</span>;
+    }
+
     if (!clickToShow) {
       showWith(callback, propsToPass);
     }
-
     return <div onClick={() => showWith()}>{clickToShow}</div>;
   }
 

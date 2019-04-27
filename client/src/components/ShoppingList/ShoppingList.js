@@ -38,7 +38,7 @@ const styles = theme => ({
 });
 
 function ShoppingList(props) {
-  const { classes, isShown, handleUnshow, socket, ...passProps } = props;
+  const { classes, isShown, handleShow, socket, ...passProps } = props;
 
   const [shoppingList, setShoppingList] = useState();
 
@@ -48,11 +48,11 @@ function ShoppingList(props) {
 
   return (
     <React.Fragment>
-      <Dialog fullScreen open={isShown} onClose={handleUnshow}>
+      <Dialog fullScreen open={isShown} onClose={handleShow}>
         {/* <DialogTitle>{list.name}</DialogTitle> */}
         <AppBar position="fixed" className={classes.bottomAppBar}>
           <Toolbar className={classes.toolbar}>
-            <IconButton onClick={handleUnshow}>
+            <IconButton onClick={handleShow}>
               <ArrowBackIcon className={classes.contrastText} />
             </IconButton>
             <InputBase
