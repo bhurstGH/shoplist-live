@@ -39,6 +39,7 @@ const styles = theme => ({
 function ShoppingLists(props) {
   const { classes, currentUser } = props;
 
+  // Necessary for passing the instance to other components
   const { current: socket } = useRef(
     io("/socketlists", {
       autoConnect: false,
@@ -46,12 +47,6 @@ function ShoppingLists(props) {
       rejectUnauthorized: false
     })
   );
-
-  // const socket = io("http://localhost:3000/socketlists", {
-  //   autoConnect: false,
-  //   reconnection: true,
-  //   rejectUnauthorized: false
-  // });
 
   const [showAddList, showAddListWith] = useShowComponent(AddList);
   const [showShoppingList, showShoppingListWith] = useShowComponent(
@@ -61,15 +56,16 @@ function ShoppingLists(props) {
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
-    socket.open();
+    socket.open(console.log("Connected"));
     getLists(socket, currentUser.id, setLists);
+    console.log("######" + socket);
 
     socket.on("NEW_LIST", listsPayload => {
       setLists(prevLists => [...prevLists, listsPayload]);
     });
 
     return () => {
-      socket.close();
+      socket.close(console.log("Disconnected"));
     };
   }, []);
 

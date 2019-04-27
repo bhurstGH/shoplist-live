@@ -25,6 +25,9 @@ export function userLogin(userInput, setCurrentUser) {
         email: res.data.email,
         id: res.data.id
       });
+      sessionStorage.setItem("name", res.data.name);
+      sessionStorage.setItem("email", res.data.email);
+      sessionStorage.setItem("id", res.data.id);
 
       return { msg: `Logged in as ${res.data.name}`, variant: "success" };
     })

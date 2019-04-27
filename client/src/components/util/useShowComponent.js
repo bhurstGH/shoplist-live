@@ -10,40 +10,50 @@ import PropTypes from "prop-types";
 function useShowComponent(Component) {
   // Boolean to toggle open state
   const [isShown, setIsShown] = useState(false);
+  const [passedProps, setPassedProps] = useState({});
 
   // Optional props to pass from showWith component
   // It acts somewhat as a makeshift state or context in this regard.
 
-  const handleShow = callback => {
-    if (callback) {
-      callback();
-    }
-    setIsShown(true);
-  };
+  // const handleShow = (callback, propsToPass) => {
+  //   if (callback) {
+  //     callback();
+  //   }
+  //   setPassedProps(propsToPass);
+  //   setIsShown(true);
+  // };
 
   const handleUnshow = () => {
+    setPassedProps({});
     setIsShown(false);
   };
 
   // The component to open, along with its props as an object
   function showComponent(props) {
     return (
-      <Component isShown={isShown} handleUnshow={handleUnshow} {...props} />
+      <Component
+        isShown={isShown}
+        handleUnshow={handleUnshow}
+        {...props}
+        {...passedProps}
+      />
     );
   }
 
-  // clickToShow represents anything (text, button, another component, etc)
-  // It will be wrapped in a div that will launch Component on click
-
-  // propsObject: optional props you can pass as the 2nd argument of showWith.
-
-  // For versatility:
-  // Pass 'null' to clickToShow and the component can be passed as a normal onClick handler
-  function showComponentWith(clickToShow, callback) {
-    if (!clickToShow) {
-      return handleShow(callback);
+  function showComponentWith(clickToShow, callback, propsToPass = {}) {
+    function showWith() {
+      if (callback) {
+        callback();
+      }
+      setPassedProps(propsToPass);
+      setIsShown(true);
     }
-    return <div onClick={() => handleShow(callback)}>{clickToShow}</div>;
+
+    if (!clickToShow) {
+      showWith(callback, propsToPass);
+    }
+
+    return <div onClick={() => showWith()}>{clickToShow}</div>;
   }
 
   return [showComponent, showComponentWith];

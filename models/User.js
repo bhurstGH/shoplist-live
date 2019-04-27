@@ -44,10 +44,10 @@ userSchema.pre("save", function(next) {
 });
 
 userSchema.methods = {
-  comparePassword: function(plainpass, callback) {
+  comparePassword(plainpass, callback) {
     return callback(null, bcrypt.compareSync(plainpass, this.password));
   },
-  addList: function(id) {
+  addList(id) {
     // Add list to user.
     if (this.lists === null) {
       return (this.lists = [id]);
@@ -55,7 +55,7 @@ userSchema.methods = {
 
     return this.lists.addToSet(id);
   },
-  addConnection: function(id) {
+  addConnection(id) {
     // Add a connection
     if (this.connections === null) {
       return (this.connections = [id]);
@@ -66,7 +66,7 @@ userSchema.methods = {
 };
 
 userSchema.statics = {
-  addListToUsers: async function(idArray, listId) {
+  async addListToUsers(idArray, listId) {
     // Add listId to users in idArray
     const listMembers = await User.find()
       .where("_id")
@@ -79,16 +79,18 @@ userSchema.statics = {
   }
 };
 
-userSchema.query.getLists = function() {
-  return this.select("lists").populate({
-    path: "lists",
-    populate: { path: "members", select: "email name" }
-  });
-};
+userSchema.query = {
+  getLists() {
+    return this.select("lists").populate({
+      path: "lists",
+      populate: { path: "members", select: "email name" }
+    });
+  },
 
-userSchema.query.getConnections = function() {
-  // Get connections, returning only the id, email, and name to the client
-  return this.select("connections").populate("connections", "email name");
+  getConnections() {
+    // Get connections, returning only the id, email, and name to the client
+    return this.select("connections").populate("connections", "email name");
+  }
 };
 
 const User = mongoose.model("User", userSchema);

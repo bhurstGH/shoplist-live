@@ -117,6 +117,7 @@ router.get("/users/connections", (req, res) => {
 // Logout user out
 router.get("/users/logout", (req, res) => {
   req.logout();
+  req.session.destroy();
   console.log("Logout Success");
   res.json(null);
 });

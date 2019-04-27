@@ -7,10 +7,11 @@ const User = require("../models/User");
 module.exports = io => {
   const listsIO = io.of("/socketlists");
 
-  listsIO.once("connection", socket => {
+  listsIO.on("connection", socket => {
     console.log(`${socket.id} has connected to socketlists namespace`);
     // Create a new list
     socket.on("NEW_LIST", (listInfo, res) => {
+      console.log("@@@@@@@@@@@@@");
       const { userId, name, members } = listInfo;
 
       members.push(userId);
@@ -77,6 +78,8 @@ module.exports = io => {
           res(err, null);
         });
     });
+
+    socket.on("disconnect", () => console.log("User Disconnected"));
   });
 
   return router;

@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const session = require("express-session");
 const passportConfig = require("./config/passportConfig");
+const routesConfig = require("./config/routesConfig");
 const mongoose = require("mongoose");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const path = require("path");
@@ -52,7 +53,7 @@ app.use(
 passportConfig(app);
 
 // Routes
-require("./config/routesConfig")(app, io);
+routesConfig(app, io);
 
 //Serve static assets from client if in production
 if (process.env.NODE_ENV === "production") {
