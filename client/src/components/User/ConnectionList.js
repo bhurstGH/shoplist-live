@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { getConnections } from "../../js/connectionHelpers";
 
-// Comonent that displays connections in a select menu with checkboxes
+// Component that displays connections in a select menu with checkboxes
 // Will feed selected connections as an array to parent
 // output and setOutput props are the parent's useState hook
 

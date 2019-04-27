@@ -74,10 +74,6 @@ function ShoppingLists(props) {
     getLists(socket, currentUser.id, setLists);
   };
 
-  const handleClick = list => {
-    showShoppingListWith(null);
-  };
-
   return (
     <Paper className={classes.paper}>
       <div className={classes.addButton}>
@@ -96,7 +92,11 @@ function ShoppingLists(props) {
           <ListItem
             key={list._id}
             button
-            onClick={() => showShoppingListWith(null)}
+            onClick={() =>
+              showShoppingListWith(null, sendProps => {
+                sendProps({ list });
+              })
+            }
           >
             <ListItemText
               primary={list.name}

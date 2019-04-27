@@ -12,7 +12,6 @@ module.exports = io => {
 
     // Create a new list
     socket.on("NEW_LIST", (listInfo, res) => {
-      console.log("@@@@@@@@@@@@@");
       const { userId, name, members } = listInfo;
 
       members.push(userId);

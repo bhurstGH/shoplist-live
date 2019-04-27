@@ -6,7 +6,6 @@ import ShoppingLists from "./components/ShoppingList/ShoppingLists";
 import Login from "./components/User/Login";
 import Register from "./components/User/Register";
 import { getUser } from "./js/userHelpers";
-import useShowComponent from "./components/util/useShowComponent";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});

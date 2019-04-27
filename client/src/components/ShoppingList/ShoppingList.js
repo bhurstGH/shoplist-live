@@ -8,7 +8,13 @@ import {
   Toolbar,
   Button,
   IconButton,
-  InputBase
+  InputBase,
+  TextField,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+  Divider
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
@@ -28,9 +34,6 @@ const styles = theme => ({
   contrastText: {
     color: theme.palette.primary.contrastText
   },
-  grow: {
-    flexGrow: 1
-  },
   button: {
     backgroundColor: theme.palette.secondary.main,
     marginRight: theme.spacing.unit * 2
@@ -38,29 +41,33 @@ const styles = theme => ({
 });
 
 function ShoppingList(props) {
-  const { classes, isShown, handleShow, socket, ...passProps } = props;
+  const { classes, isShown, handleShow, socket, passedProps } = props;
+  const { list } = passedProps;
 
   const [shoppingList, setShoppingList] = useState();
+  const [itemName, setItemName] = useState("");
 
   useEffect(() => {
-    console.log(passProps);
+    openList(socket, list._id, setShoppingList);
   }, []);
+
+  const handleChange = e => {
+    setItemName({
+      ...itemName,
+      [e.target.name]: e.target.value
+    });
+  };
 
   return (
     <React.Fragment>
       <Dialog fullScreen open={isShown} onClose={handleShow}>
-        {/* <DialogTitle>{list.name}</DialogTitle> */}
+        <DialogTitle>{list.name}</DialogTitle>
+        <List />
         <AppBar position="fixed" className={classes.bottomAppBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton onClick={handleShow}>
               <ArrowBackIcon className={classes.contrastText} />
             </IconButton>
-            <InputBase
-              className={`${classes.contrastText} ${classes.grow}`}
-              color="inherit"
-              variant="outlined"
-              placeholder="Add item..."
-            />
             <Button
               className={classes.button}
               color="inherit"
@@ -72,6 +79,7 @@ function ShoppingList(props) {
               className={classes.button}
               color="inherit"
               variant="outlined"
+              onClick={() => console.log(list)}
             >
               <PaymentIcon />
             </Button>
