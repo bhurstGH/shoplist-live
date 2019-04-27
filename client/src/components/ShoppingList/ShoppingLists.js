@@ -95,6 +95,7 @@ function ShoppingLists(props) {
             onClick={() =>
               showShoppingListWith(null, sendProps => {
                 sendProps({ list });
+                return list._id;
               })
             }
           >

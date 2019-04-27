@@ -61,21 +61,37 @@ module.exports = io => {
         });
     });
 
-    // Get list items
+    // Open this list for active tracking
 
-    socket.on("OPEN_LIST", (listId, res) => {
-      socket.join(listId, () => {
+    socket.on("OPEN_LIST", listId => {
+      console.log("OOOOOOPEN");
+      socket.join(`${listId}`, () => {
         console.log(`${socket.id} joined room ${listId}`);
       });
 
       ShoppingList.findById(listId)
         .then(list => {
-          console.log(list);
-          res(null, list);
+          socket.emit("LIST_OPEN", list);
+        })
+        .catch(err => {
+          socket.emit("LIST_FAIL", err);
+          console.log(err);
+        });
+    });
+
+    socket.on("CLOSE_LIST", list => {
+      socket.leave(list._id);
+      console.log(`${socket.id} left room ${list._id}`);
+    });
+
+    socket.on("ADD_ITEM", newItem => {
+      ShoppingList.findById(newItem.list)
+        .then(res => {
+          console.log(res);
+          listsIO.to(res._id).emit("ITEM_ADDED", res);
         })
         .catch(err => {
           console.log(err);
-          res(err, null);
         });
     });
 

@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import {
-  Paper,
-  TextField,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { Paper, TextField, Typography, Checkbox } from "@material-ui/core";
+
+const styles = theme => ({
+  paper: {
+    display: "flex",
+    margin: theme.spacing.unit
+  }
+});
 
 function ShoppingItem(props) {
-  const { id, name, inCart, purchased } = props;
+  const { classes } = props;
 
-  const [inCart, setInCart] = useState(false);
+  const [carted, setCarted] = useState(false);
   const [itemName, setItemName] = useState("");
 
   const handleChange = e => {
@@ -20,12 +20,10 @@ function ShoppingItem(props) {
   };
 
   return (
-    <Paper>
-          <Checkbox checked={() => setInCart(!inCart)} />
-
-        <TextField name={id} value={}/>
+    <Paper className={classes.paper}>
+      <Checkbox checked={carted} onChange={() => setCarted(prev => !prev)} />
     </Paper>
   );
 }
 
-export default ShoppingItem;
+export default withStyles(styles)(ShoppingItem);

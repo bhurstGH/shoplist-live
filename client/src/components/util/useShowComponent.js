@@ -11,7 +11,7 @@ function useShowComponent(Component) {
   // Boolean to toggle open state
   const [isShown, setIsShown] = useState(false);
   const [passedProps, setPassedProps] = useState({});
-
+  const [callbackReturn, setCallbackReturn] = useState();
   // const [showCondition, setShowCondition] = useState();
   // const [propertyNames, setPropertyNames] = useState({
   //   show: "isShown",
@@ -35,6 +35,7 @@ function useShowComponent(Component) {
           handleShow={unshow}
           {...props}
           passedProps={passedProps}
+          cbRef={callbackReturn}
         />
       );
     }
@@ -43,7 +44,8 @@ function useShowComponent(Component) {
   function showComponentWith(clickToShow, callback) {
     function showWith() {
       if (callback) {
-        callback(setPassedProps);
+        const res = callback(setPassedProps);
+        setCallbackReturn(res);
       }
       setIsShown(true);
     }

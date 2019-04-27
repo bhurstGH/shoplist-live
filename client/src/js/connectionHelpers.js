@@ -15,7 +15,6 @@ export function getConnections(setConnections) {
   axios
     .get("/users/connections")
     .then(res => {
-      console.log("test!!!!" + res.data.connections);
       setConnections(res.data.connections || []);
     })
     .catch(err => {
