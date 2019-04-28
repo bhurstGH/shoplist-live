@@ -25,7 +25,7 @@ module.exports = io => {
         .save()
         .then(list => {
           console.log(`New list created: ${list.name}`);
-          socket.emit("UPDATE_LISTS", list);
+          listsIO.emit("UPDATE_LISTS", list);
           res(null, list);
         })
         .catch(err => {
@@ -59,7 +59,7 @@ module.exports = io => {
       )
         .then(list => {
           console.log(`Edited list: ${list.name}`);
-          socket.emit("UPDATE_LISTS", list);
+          listsIO.emit("UPDATE_LISTS", list);
           res(null, list);
         })
         .catch(err => {
@@ -90,7 +90,7 @@ module.exports = io => {
       ShoppingList.findById(listId)
         .select("items")
         .then(list => {
-          socket.emit("UPDATE_ITEMS", list);
+          listsIO.emit("UPDATE_ITEMS", list);
         })
         .catch(err => {
           socket.emit("ERROR");
