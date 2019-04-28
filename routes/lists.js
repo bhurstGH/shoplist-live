@@ -74,6 +74,7 @@ module.exports = io => {
       ShoppingList.findByIdAndDelete(listId)
         .then(list => {
           console.log(list);
+          listsIO.emit("UPDATE_LISTS", list);
         })
         .catch(err => {
           console.log(err);
