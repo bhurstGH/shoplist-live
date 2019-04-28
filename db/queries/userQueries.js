@@ -56,7 +56,7 @@ module.exports = {
     });
   },
   getConnections(userId, callback) {
-    User.findById(userId)
+    return User.findById(userId)
       .getConnections()
       .then(connections => {
         return callback(null, connections);

@@ -13,8 +13,12 @@ function checkSession(req, res, next) {
 }
 
 module.exports = {
+<<<<<<< HEAD
   getUser(req, res, next) {
     console.log(req.user, "USER");
+=======
+  checkSession(req, res, next) {
+>>>>>>> dev
     if (req.user) {
       res
         .status(200)

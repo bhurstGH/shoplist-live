@@ -22,7 +22,6 @@ router.post(
   // Login failure
   (err, req, res, next) => {
     console.log(err);
-    console.log(req.authError);
     res.status(400).json({ msg: req.authError });
   }
 );

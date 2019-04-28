@@ -11,11 +11,11 @@ import {
   ListItemText,
   Divider
 } from "@material-ui/core";
-import Clear from "@material-ui/icons/Clear";
+import Edit from "@material-ui/icons/Edit";
+import DeleteForever from "@material-ui/icons/DeleteForever";
 import AddList from "./AddList";
 import { getLists, deleteList } from "../../js/listHelpers";
 import io from "socket.io-client";
-import ShoppingList from "./ShoppingList";
 import useShowComponent from "../util/useShowComponent";
 
 const styles = theme => ({
@@ -37,7 +37,7 @@ const styles = theme => ({
 });
 
 function ShoppingLists(props) {
-  const { classes, currentUser, showShoppingListWith, setListsToggle } = props;
+  const { classes, currentUser, showShoppingListWith } = props;
 
   // Necessary for passing the instance to other components
   const { current: socket } = useRef(
@@ -56,8 +56,8 @@ function ShoppingLists(props) {
     socket.open();
     getLists(socket, currentUser.id, setLists);
 
-    socket.on("NEW_LIST", listsPayload => {
-      setLists(prevLists => [...prevLists, listsPayload]);
+    socket.on("UPDATE_LISTS", listsPayload => {
+      getLists(socket, currentUser.id, setLists);
     });
 
     return () => {
@@ -91,8 +91,7 @@ function ShoppingLists(props) {
             button
             onClick={() =>
               showShoppingListWith(null, sendProps => {
-                sendProps({ list, socket, setListsToggle: setListsToggle });
-                setListsToggle(false);
+                sendProps({ list, socket });
               })
             }
           >
@@ -100,13 +99,24 @@ function ShoppingLists(props) {
               primary={list.name}
               secondary={`${list.members.length} list members`}
             />
+
+            <IconButton
+              onClick={e => {
+                e.stopPropagation();
+                showAddListWith(null, sendProps => {
+                  sendProps({ list });
+                });
+              }}
+            >
+              <Edit />
+            </IconButton>
+
             <IconButton onClick={e => handleDelete(e, list._id)}>
-              <Clear />
+              <DeleteForever />
             </IconButton>
           </ListItem>
         ))}
       </List>
-      {/* {showShoppingList({ currentUser, socket })} */}
     </Paper>
   );
 }

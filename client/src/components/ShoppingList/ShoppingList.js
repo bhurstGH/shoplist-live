@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
-  Dialog,
-  DialogTitle,
   AppBar,
   Toolbar,
   Button,
@@ -12,7 +10,6 @@ import {
   TextField,
   List,
   Typography,
-  Divider,
   Chip
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -21,13 +18,18 @@ import PaymentIcon from "@material-ui/icons/Payment";
 import ShoppingItem from "./ShoppingItem";
 
 const styles = theme => ({
-  root: {
+  paper: {
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.up("sm")]: {
+      width: 500,
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
   },
-  textfield: {
-    margin: theme.spacing.unit * 2
-  },
+
   bottomAppBar: {
     top: "auto",
     bottom: 0
@@ -39,6 +41,9 @@ const styles = theme => ({
   },
   contrastText: {
     color: theme.palette.primary.contrastText
+  },
+  backButton: {
+    marginRight: theme.spacing.unit * 3
   },
   button: {
     backgroundColor: theme.palette.secondary.main,
@@ -59,7 +64,10 @@ function ShoppingList(props) {
 
     socket.on("UPDATE_ITEMS", itemPayload => {
       console.log("Updating items...");
+<<<<<<< HEAD
       console.log(itemPayload.items);
+=======
+>>>>>>> dev
       setItems(itemPayload.items);
     });
     socket.on("SUCCESS", res => {
@@ -85,51 +93,50 @@ function ShoppingList(props) {
       list: list._id
     };
     socket.emit("ADD_ITEM", newItem);
+    setItemName("");
   };
 
   return (
-    <React.Fragment>
-      <Paper open={isShown} onClose={handleShow}>
-        <Typography>List: {list.name}</Typography>
-        <TextField
-          className={classes.textfield}
-          margin="normal"
-          name="newItem"
-          value={itemName}
-          onChange={handleChange}
-          placeholder="Enter new item. Submit with button below."
-        />
-        <List>
-          {items.map(item => (
-            <ShoppingItem key={item._id} item={item} />
-          ))}
-        </List>
+    <Paper className={classes.paper} open={isShown} onClose={handleShow}>
+      <Typography>List: {list.name}</Typography>
+      <TextField
+        fullWidth
+        margin="normal"
+        name="newItem"
+        value={itemName}
+        onChange={handleChange}
+        placeholder="Enter new item. Submit with button below."
+      />
+      <List>
+        {items.map(item => (
+          <ShoppingItem key={item._id} item={item} />
+        ))}
+      </List>
 
-        <AppBar position="fixed" className={classes.bottomAppBar}>
-          <Toolbar className={classes.toolbar}>
-            <IconButton onClick={() => setListsToggle(true)}>
-              <ArrowBackIcon className={classes.contrastText} />
-            </IconButton>
-            <Button
-              className={classes.button}
-              color="inherit"
-              variant="outlined"
-              onClick={addNewItem}
-            >
-              <AddIcon />
-            </Button>
-            <Button
-              className={classes.button}
-              color="inherit"
-              variant="outlined"
-              onClick={() => console.log(list)}
-            >
-              <PaymentIcon />
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </Paper>
-    </React.Fragment>
+      <AppBar position="fixed" className={classes.bottomAppBar}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton className={classes.backButton} onClick={handleShow}>
+            <ArrowBackIcon className={classes.contrastText} />
+          </IconButton>
+          <Button
+            className={classes.button}
+            color="inherit"
+            variant="outlined"
+            onClick={addNewItem}
+          >
+            <AddIcon />
+          </Button>
+          <Button
+            className={classes.button}
+            color="inherit"
+            variant="outlined"
+            onClick={() => console.log(list)}
+          >
+            <PaymentIcon />
+          </Button>
+        </Toolbar>
+      </AppBar>
+    </Paper>
   );
 }
 
