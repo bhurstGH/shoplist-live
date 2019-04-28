@@ -71,8 +71,8 @@ module.exports = io => {
 
       ShoppingList.findById(listId)
         .select("items")
-        .then(items => {
-          socket.emit("UPDATE_ITEMS", items);
+        .then(list => {
+          socket.emit("UPDATE_ITEMS", list);
           console.log(items);
         })
         .catch(err => {
@@ -92,10 +92,11 @@ module.exports = io => {
       }
       ShoppingList.findById(newItem.list)
         .then(list => {
-          console.log(list);
           list.items.push({ name: newItem.name });
           list.save();
-          listsIO.to(list._id).emit("UPDATE_ITEMS");
+          console.log("@#@#@#@##@#" + list.items);
+
+          listsIO.to(list._id).emit("UPDATE_ITEMS", list);
         })
         .catch(err => {
           console.log(err);

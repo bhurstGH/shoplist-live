@@ -13,6 +13,7 @@ module.exports = function(app) {
       (req, email, password, done) => {
         User.findOne({ email })
           .then(user => {
+            req.authError = "Made it this far";
             if (!user) {
               req.authError = "Email is incorrect";
               return done(null, false);
@@ -27,7 +28,8 @@ module.exports = function(app) {
             return done(null, user);
           })
           .catch(err => {
-            done(err);
+            console.log(err);
+            done(err, false);
           });
       }
     )

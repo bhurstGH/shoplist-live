@@ -54,11 +54,13 @@ function ShoppingList(props) {
   const [itemName, setItemName] = useState("");
 
   useEffect(() => {
+    socket.open();
     socket.emit("OPEN_LIST", list._id);
 
     socket.on("UPDATE_ITEMS", itemPayload => {
       console.log("Updating items...");
-      setItems(prevItems => [...prevItems, itemPayload]);
+      console.log(itemPayload.items);
+      setItems(itemPayload.items);
     });
     socket.on("SUCCESS", res => {
       console.log("Request successful");
@@ -69,6 +71,7 @@ function ShoppingList(props) {
 
     return () => {
       socket.emit("CLOSE_LIST", list);
+      socket.close();
     };
   }, []);
 

@@ -32,7 +32,7 @@ export function userLogin(userInput, setCurrentUser) {
       return { msg: `Logged in as ${res.data.name}`, variant: "success" };
     })
     .catch(err => {
-      console.log(err.response);
+      console.log(err.response.data);
       return { msg: err.response.data.msg, variant: "error" };
     });
 }

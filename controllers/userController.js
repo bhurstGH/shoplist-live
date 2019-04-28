@@ -1,17 +1,44 @@
 const userQueries = require("../db/queries/userQueries");
 const passport = require("passport");
 
+function checkSession(req, res, next) {
+  console.log(req.user, "USER");
+  if (req.user) {
+    res
+      .status(200)
+      .json({ name: req.user.name, email: req.user.email, id: req.user._id });
+  } else {
+    res.json({ msg: req.authError });
+  }
+}
+
 module.exports = {
-  checkSession(req, res, next) {
+  getUser(req, res, next) {
     console.log(req.user, "USER");
     if (req.user) {
       res
         .status(200)
         .json({ name: req.user.name, email: req.user.email, id: req.user._id });
     } else {
-      res.json(null);
+      res.status(400).json({ msg: "Bad stuff" });
     }
   },
+  // See users.js route file
+  //   login(req, res, next) {
+  //     passport.authenticate("local", { failWithError: true }),
+  //       // Successful login
+  //       (req, res) => {
+  //         const { name, email, _id } = req.user;
+  //         console.log("Login Success");
+  //         res.status(200).json({ name, email, id: _id });
+  //       },
+  //       // Login failure
+  //       (err, req, res, next) => {
+  //         console.log(err);
+  //         console.log(req.authError);
+  //         res.status(400).json({ msg: req.authError });
+  //       };
+  //   },
   registerUser(req, res, next) {
     const { name, email, password, confirmpass } = req.body;
 
@@ -32,7 +59,7 @@ module.exports = {
       }
     });
   },
-  addConnection(req, res) {
+  addConnection(req, res, next) {
     const { email } = req.body;
 
     if (!email) {
@@ -45,15 +72,15 @@ module.exports = {
         .json({ msg: "Hopefully you already feel connected to yourself :)" });
     }
 
-    userQueries.addConnection(email, req.user._id, err => {
+    userQueries.createConnection(email, req.user._id, err => {
       if (err) {
-        res.status(400).json(err);
+        return res.status(400).json(err);
       } else {
-        res.status(200).end();
+        return res.status(200).end();
       }
     });
   },
-  getConnections(req, res) {
+  getConnections(req, res, next) {
     userQueries.getConnections(req.user._id, (err, connections) => {
       if (err) {
         res.status(400).json(err);
@@ -62,7 +89,7 @@ module.exports = {
       }
     });
   },
-  logout(req, res) {
+  logout(req, res, next) {
     req.logout();
     console.log("Logout Success");
     res.json(null);
