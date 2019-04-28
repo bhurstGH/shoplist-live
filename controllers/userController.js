@@ -31,5 +31,40 @@ module.exports = {
         return res.status(200).json(user);
       }
     });
+  },
+  addConnection(req, res) {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ msg: "Email required." });
+    }
+
+    if (email === req.user.email) {
+      return res
+        .status(400)
+        .json({ msg: "Hopefully you already feel connected to yourself :)" });
+    }
+
+    userQueries.addConnection(email, req.user._id, err => {
+      if (err) {
+        res.status(400).json(err);
+      } else {
+        res.status(200).end();
+      }
+    });
+  },
+  getConnections(req, res) {
+    userQueries.getConnections(req.user._id, (err, connections) => {
+      if (err) {
+        res.status(400).json(err);
+      } else {
+        res.status(200).json(connections);
+      }
+    });
+  },
+  logout(req, res) {
+    req.logout();
+    console.log("Logout Success");
+    res.json(null);
   }
 };

@@ -30,5 +30,40 @@ module.exports = {
           callback({ msg: message });
         });
     });
+  },
+  addConnection(email, userId, callback) {
+    return User.findOne({ email }, "_id").then(connectionId => {
+      if (!connectionId) {
+        return callback({ msg: "There is no user with that email" });
+      }
+
+      User.findById(userId).then(user => {
+        // Instance method on user model
+        // Utilizes addToSet to prevent duplicates
+        user.addConnection(connectionId._id);
+        // connectionId.addConnection(user._id);
+        user
+          .save()
+          .then(() => {
+            console.log("Connection added");
+            callback(null);
+          })
+          .catch(err => {
+            console.log("Failed to make connection");
+            callback(err);
+          });
+      });
+    });
+  },
+  getConnections(userId, callback) {
+    User.findById(userId)
+      .getConnections()
+      .then(connections => {
+        return callback(null, connections);
+      })
+      .catch(err => {
+        console.log("Failed to retrieve connections");
+        callback(err, null);
+      });
   }
 };
