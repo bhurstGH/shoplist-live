@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const ShoppingList = require("../models/ShoppingList");
-const User = require("../models/User");
+const ShoppingList = require("../db/models/ShoppingList");
+const User = require("../db/models/User");
 
 module.exports = io => {
   const listsIO = io.of("/socketlists");
@@ -70,11 +70,13 @@ module.exports = io => {
       });
 
       ShoppingList.findById(listId)
-        .then(list => {
-          socket.emit("LIST_OPEN", list);
+        .select("items")
+        .then(items => {
+          socket.emit("UPDATE_ITEMS", items);
+          console.log(items);
         })
         .catch(err => {
-          socket.emit("LIST_FAIL", err);
+          socket.emit("ERROR");
           console.log(err);
         });
     });
@@ -85,10 +87,15 @@ module.exports = io => {
     });
 
     socket.on("ADD_ITEM", newItem => {
+      if (!newItem.name) {
+        socket.emit("ERROR", "Item name is required");
+      }
       ShoppingList.findById(newItem.list)
-        .then(res => {
-          console.log(res);
-          listsIO.to(res._id).emit("ITEM_ADDED", res);
+        .then(list => {
+          console.log(list);
+          list.items.push({ name: newItem.name });
+          list.save();
+          listsIO.to(list._id).emit("UPDATE_ITEMS");
         })
         .catch(err => {
           console.log(err);

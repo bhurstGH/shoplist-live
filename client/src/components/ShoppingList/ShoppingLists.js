@@ -37,7 +37,7 @@ const styles = theme => ({
 });
 
 function ShoppingLists(props) {
-  const { classes, currentUser } = props;
+  const { classes, currentUser, showShoppingListWith, setListsToggle } = props;
 
   // Necessary for passing the instance to other components
   const { current: socket } = useRef(
@@ -49,9 +49,6 @@ function ShoppingLists(props) {
   );
 
   const [showAddList, showAddListWith] = useShowComponent(AddList);
-  const [showShoppingList, showShoppingListWith] = useShowComponent(
-    ShoppingList
-  );
 
   const [lists, setLists] = useState([]);
 
@@ -94,8 +91,8 @@ function ShoppingLists(props) {
             button
             onClick={() =>
               showShoppingListWith(null, sendProps => {
-                sendProps({ list });
-                return list._id;
+                sendProps({ list, socket, setListsToggle: setListsToggle });
+                setListsToggle(false);
               })
             }
           >
@@ -109,7 +106,7 @@ function ShoppingLists(props) {
           </ListItem>
         ))}
       </List>
-      {showShoppingList({ currentUser, socket })}
+      {/* {showShoppingList({ currentUser, socket })} */}
     </Paper>
   );
 }

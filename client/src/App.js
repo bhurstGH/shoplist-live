@@ -3,9 +3,11 @@ import { CssBaseline } from "@material-ui/core";
 import { SnackbarProvider } from "notistack";
 import Navbar from "./components/Navbar";
 import ShoppingLists from "./components/ShoppingList/ShoppingLists";
+import ShoppingList from "./components/ShoppingList/ShoppingList";
 import Login from "./components/User/Login";
 import Register from "./components/User/Register";
 import { getUser } from "./js/userHelpers";
+import useShowComponent from "./components/util/useShowComponent";
 
 // Keep the user stored in a globally accessible context
 export const UserContext = createContext({});
@@ -24,18 +26,31 @@ function App() {
     }
   });
 
+  const [showShoppingList, showShoppingListWith] = useShowComponent(
+    ShoppingList
+  );
+
   useEffect(() => {
     getUser(setCurrentUser);
   }, []);
 
   // Toggle between Login and Register forms
+  const [listsToggle, setListsToggle] = useState(true);
   const [loginToggle, setLoginToggle] = useState(true);
 
   // If the user is logged, load user page
   // If not, load the login and/or register forms.
   const isLoggedIn = () => {
     if (currentUser) {
-      return <ShoppingLists currentUser={currentUser} />;
+      return listsToggle ? (
+        <ShoppingLists
+          currentUser={currentUser}
+          showShoppingListWith={showShoppingListWith}
+          setListsToggle={setListsToggle}
+        />
+      ) : (
+        showShoppingList({ currentUser })
+      );
     } else {
       return loginToggle ? (
         <Login setLoginToggle={setLoginToggle} />

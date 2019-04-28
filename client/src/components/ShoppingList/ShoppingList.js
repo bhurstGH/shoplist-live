@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
+  Paper,
   Dialog,
   DialogTitle,
   AppBar,
@@ -10,6 +11,7 @@ import {
   IconButton,
   TextField,
   List,
+  Typography,
   Divider,
   Chip
 } from "@material-ui/core";
@@ -45,32 +47,25 @@ const styles = theme => ({
 });
 
 function ShoppingList(props) {
-  const { classes, isShown, handleShow, socket, passedProps, cbRef } = props;
-  const { list } = passedProps;
+  const { classes, isShown, handleShow, passedProps } = props;
+  const { list, socket, setListsToggle } = passedProps;
 
-  const [items, setItems] = useState(list.items);
+  const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState("");
 
   useEffect(() => {
     socket.emit("OPEN_LIST", list._id);
 
-    socket.on("LIST_OPEN", listPayload => {
-      console.log(`List opened: ${listPayload}`);
+    socket.on("UPDATE_ITEMS", itemPayload => {
+      console.log("Updating items...");
+      setItems(prevItems => [...prevItems, itemPayload]);
     });
-
-    socket.on("LIST_FAIL", err => {
-      console.log(`List failure: ${err}`);
+    socket.on("SUCCESS", res => {
+      console.log("Request successful");
     });
-
-    socket.on("ITEM_ADDED", res => {
-      console.log("RES::::: " + res);
+    socket.on("ERROR", res => {
+      console.log("Error with request");
     });
-
-    // Multiple options for receiving data
-    console.log("passedProps:", passedProps);
-    console.log(items);
-    console.log("list:", list);
-    console.log("cbRef:", cbRef);
 
     return () => {
       socket.emit("CLOSE_LIST", list);
@@ -84,8 +79,6 @@ function ShoppingList(props) {
   const addNewItem = () => {
     const newItem = {
       name: itemName,
-      inCart: false,
-      purchase: false,
       list: list._id
     };
     socket.emit("ADD_ITEM", newItem);
@@ -93,8 +86,8 @@ function ShoppingList(props) {
 
   return (
     <React.Fragment>
-      <Dialog fullScreen open={isShown} onClose={handleShow}>
-        <DialogTitle>List: {list.name}</DialogTitle>
+      <Paper open={isShown} onClose={handleShow}>
+        <Typography>List: {list.name}</Typography>
         <TextField
           className={classes.textfield}
           margin="normal"
@@ -104,11 +97,14 @@ function ShoppingList(props) {
           placeholder="Enter new item. Submit with button below."
         />
         <List>
-          <ShoppingItem />
+          {items.map(item => (
+            <ShoppingItem key={item._id} item={item} />
+          ))}
         </List>
+
         <AppBar position="fixed" className={classes.bottomAppBar}>
           <Toolbar className={classes.toolbar}>
-            <IconButton onClick={handleShow}>
+            <IconButton onClick={() => setListsToggle(true)}>
               <ArrowBackIcon className={classes.contrastText} />
             </IconButton>
             <Button
@@ -129,7 +125,7 @@ function ShoppingList(props) {
             </Button>
           </Toolbar>
         </AppBar>
-      </Dialog>
+      </Paper>
     </React.Fragment>
   );
 }

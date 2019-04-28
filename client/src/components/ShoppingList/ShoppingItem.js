@@ -10,7 +10,7 @@ const styles = theme => ({
 });
 
 function ShoppingItem(props) {
-  const { classes } = props;
+  const { classes, item } = props;
 
   const [carted, setCarted] = useState(false);
   const [itemName, setItemName] = useState("");
@@ -21,6 +21,7 @@ function ShoppingItem(props) {
 
   return (
     <Paper className={classes.paper}>
+      <Typography>{item.name}</Typography>
       <Checkbox checked={carted} onChange={() => setCarted(prev => !prev)} />
     </Paper>
   );

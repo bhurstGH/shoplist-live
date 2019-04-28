@@ -2,19 +2,21 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-const User = require("../models/User");
+const User = require("../db/models/User");
+const userController = require("../controllers/userController");
 
 // Check for user
-router.get("/user", (req, res) => {
-  console.log(req.user, "USER");
-  if (req.user) {
-    res
-      .status(200)
-      .json({ name: req.user.name, email: req.user.email, id: req.user._id });
-  } else {
-    res.json(null);
-  }
-});
+router.get("/user", userController.checkSession);
+// (req, res) => {
+//   console.log(req.user, "USER");
+//   if (req.user) {
+//     res
+//       .status(200)
+//       .json({ name: req.user.name, email: req.user.email, id: req.user._id });
+//   } else {
+//     res.json(null);
+//   }
+// });
 
 // Log user in
 router.post(
@@ -35,46 +37,47 @@ router.post(
 );
 
 // Register new user
-router.post("/users/register", (req, res) => {
-  const { name, email, password, confirmpass } = req.body;
+router.post("/users/register", userController.registerUser);
+// (req, res) => {
+//   const { name, email, password, confirmpass } = req.body;
 
-  if (!name || !email || !password || !confirmpass) {
-    return res.status(400).json({ msg: "All fields required." });
-  }
+//   if (!name || !email || !password || !confirmpass) {
+//     return res.status(400).json({ msg: "All fields required." });
+//   }
 
-  if (password !== confirmpass) {
-    return res.status(400).json({ msg: "Passwords do not match." });
-  }
+//   if (password !== confirmpass) {
+//     return res.status(400).json({ msg: "Passwords do not match." });
+//   }
 
-  // Query to check if the email is already in use
-  User.findOne({ email }, "email").then(query => {
-    if (query) {
-      return res.status(400).json({ msg: "Email is already in use" });
-    }
+//   // Query to check if the email is already in use
+//   User.findOne({ email }, "email").then(query => {
+//     if (query) {
+//       return res.status(400).json({ msg: "Email is already in use" });
+//     }
 
-    // User model has a pre-save hook that automatically hashes password
-    const newUser = new User({
-      name,
-      email,
-      password
-    });
+//     // User model has a pre-save hook that automatically hashes password
+//     const newUser = new User({
+//       name,
+//       email,
+//       password
+//     });
 
-    newUser
-      .save()
-      .then(user => {
-        res.status(200).json({
-          id: user._id,
-          name: user.name,
-          email: user.email
-        });
-      })
-      .catch(err => {
-        let { message } =
-          err.errors.name || err.errors.email || err.errors.password;
-        res.status(400).json({ msg: message });
-      });
-  });
-});
+//     newUser
+//       .save()
+//       .then(user => {
+//         res.status(200).json({
+//           id: user._id,
+//           name: user.name,
+//           email: user.email
+//         });
+//       })
+//       .catch(err => {
+//         let { message } =
+//           err.errors.name || err.errors.email || err.errors.password;
+//         res.status(400).json({ msg: message });
+//       });
+//   });
+// });
 
 // Add a connection (friend, family, etc)
 router.post("/users/add-connection", (req, res) => {
@@ -99,6 +102,7 @@ router.post("/users/add-connection", (req, res) => {
       // Instance method on user model
       // Utilizes addToSet to prevent duplicates
       user.addConnection(connectionId._id);
+      // connectionId.addConnection(user._id);
       user
         .save()
         .then(() => {
