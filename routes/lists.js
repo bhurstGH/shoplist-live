@@ -91,10 +91,6 @@ module.exports = io => {
         .select("items")
         .then(list => {
           socket.emit("UPDATE_ITEMS", list);
-<<<<<<< HEAD
-          console.log(items);
-=======
->>>>>>> dev
         })
         .catch(err => {
           socket.emit("ERROR");
@@ -115,11 +111,6 @@ module.exports = io => {
         .then(list => {
           list.items.push({ name: newItem.name });
           list.save();
-<<<<<<< HEAD
-          console.log("@#@#@#@##@#" + list.items);
-
-=======
->>>>>>> dev
           listsIO.to(list._id).emit("UPDATE_ITEMS", list);
         })
         .catch(err => {

@@ -64,10 +64,6 @@ function ShoppingList(props) {
 
     socket.on("UPDATE_ITEMS", itemPayload => {
       console.log("Updating items...");
-<<<<<<< HEAD
-      console.log(itemPayload.items);
-=======
->>>>>>> dev
       setItems(itemPayload.items);
     });
     socket.on("SUCCESS", res => {
