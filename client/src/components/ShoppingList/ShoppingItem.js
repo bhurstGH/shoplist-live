@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
@@ -12,19 +13,12 @@ import ShoppingCart from "@material-ui/icons/ShoppingCart";
 import ShoppingCartOutlined from "@material-ui/icons/ShoppingCartOutlined";
 import { deleteItem, addToCart, removeFromCart } from "../../js/listHelpers";
 
-const styles = theme => ({
-  paper: {
-    [theme.breakpoints.up("sm")]: {
-      backgroundColor: theme.palette.primary.light
-    }
-  }
-});
+const styles = theme => ({});
 
 function ShoppingItem(props) {
-  const { classes, socket, item, listId } = props;
+  const { socket, item, listId } = props;
 
   const [carted, setCarted] = useState(item.inCart);
-  const [itemName, setItemName] = useState(item.name);
 
   useEffect(() => {
     socket.on("UPDATE_CART", (cartStatus, itemId) => {
@@ -34,10 +28,6 @@ function ShoppingItem(props) {
       }
     });
   });
-
-  const handleChange = e => {
-    setItemName(e.target.value);
-  };
 
   const handleDelete = e => {
     deleteItem(socket, listId, item._id);
@@ -53,7 +43,7 @@ function ShoppingItem(props) {
   };
 
   return (
-    <Paper className={classes.paper}>
+    <Paper>
       <ListItem>
         {carted ? (
           <IconButton onClick={handleUncarting}>
@@ -64,7 +54,7 @@ function ShoppingItem(props) {
             <ShoppingCartOutlined />
           </IconButton>
         )}
-        <ListItemText primary={itemName} />
+        <ListItemText primary={item.name} />
         <ListItemSecondaryAction>
           <IconButton onClick={e => handleDelete(e)}>
             <DeleteForever />
@@ -74,5 +64,11 @@ function ShoppingItem(props) {
     </Paper>
   );
 }
+
+ShoppingItem.propTypes = {
+  socket: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+  listId: PropTypes.string.isRequired
+};
 
 export default withStyles(styles)(ShoppingItem);

@@ -31,7 +31,9 @@ function App() {
   );
 
   useEffect(() => {
-    getUser(setCurrentUser);
+    if (!currentUser) {
+      getUser(setCurrentUser);
+    }
   }, []);
 
   // Toggle between Login and Register forms

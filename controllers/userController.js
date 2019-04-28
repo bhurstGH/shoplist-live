@@ -7,7 +7,7 @@ module.exports = {
         .status(200)
         .json({ name: req.user.name, email: req.user.email, id: req.user._id });
     } else {
-      res.status(400).json({ msg: "Bad stuff" });
+      res.status(400).json({ msg: "No session found" });
     }
   },
   // See users.js route file

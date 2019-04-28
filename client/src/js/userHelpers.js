@@ -67,6 +67,6 @@ export function getUser(setCurrentUser) {
       sessionStorage.setItem("id", res.data.id);
     })
     .catch(err => {
-      console.log(err);
+      console.log(err.response);
     });
 }

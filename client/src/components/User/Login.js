@@ -100,7 +100,8 @@ function Login(props) {
 }
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  setLoginToggle: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Login);

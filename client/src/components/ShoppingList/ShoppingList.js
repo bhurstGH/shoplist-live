@@ -9,8 +9,7 @@ import {
   IconButton,
   TextField,
   List,
-  Typography,
-  Chip
+  Typography
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
@@ -153,5 +152,11 @@ function ShoppingList(props) {
     </Paper>
   );
 }
+
+ShoppingList.propTypes = {
+  passedProps: PropTypes.object.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  isShown: PropTypes.bool.isRequired
+};
 
 export default withStyles(styles)(ShoppingList);

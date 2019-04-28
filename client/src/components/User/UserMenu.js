@@ -41,7 +41,9 @@ function UserMenu(props) {
 }
 
 UserMenu.propTypes = {
-  currentUser: PropTypes.object.isRequired
+  currentUser: PropTypes.object.isRequired,
+  setCurrentUser: PropTypes.func.isRequired,
+  showAddConnectionWith: PropTypes.func.isRequired
 };
 
 export default UserMenu;

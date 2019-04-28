@@ -1,5 +1,4 @@
 const User = require("../models/User");
-const passport = require("passport");
 
 module.exports = {
   register(name, email, password, callback) {

@@ -123,7 +123,8 @@ function ShoppingLists(props) {
 
 ShoppingLists.propTypes = {
   classes: PropTypes.object.isRequired,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
+  showShoppingListWith: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(ShoppingLists);

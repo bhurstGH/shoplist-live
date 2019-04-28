@@ -12,7 +12,7 @@ export function connectionAdd(email) {
 }
 
 export function getConnections(setConnections) {
-  axios
+  return axios
     .get("/users/connections")
     .then(res => {
       setConnections(res.data.connections || []);

@@ -5,22 +5,17 @@ import PropTypes from "prop-types";
 // i.e. a dialog
 // Component is the target component to open
 
-// Component must utilize an 'isShown and "handleShow" prop
+// Component must utilize an 'isShown and "handleShow" props
 
 function useShowComponent(Component) {
   // Boolean to toggle open state
   const [isShown, setIsShown] = useState(false);
+  // Optional props passed from callback
   const [passedProps, setPassedProps] = useState({});
+  // Reference to the callback's return, if any
   const [callbackReturn, setCallbackReturn] = useState();
-  // const [showCondition, setShowCondition] = useState();
-  // const [propertyNames, setPropertyNames] = useState({
-  //   show: "isShown",
-  //   handler: "handleShow"
-  // });
 
-  // Optional props to pass from showWith component
-  // It acts somewhat as a makeshift state or context in this regard.
-
+  // Default toggle off function
   const unshow = () => {
     setPassedProps({});
     setIsShown(false);
@@ -41,6 +36,9 @@ function useShowComponent(Component) {
     }
   }
 
+  // The trigger function. Wrap around whatever you desire to make clickable
+  // Or, pass "null" to the first parameter and use as a normal onClick handler.
+  // Callback available, passes setPassedProps as its first argument for use.
   function showComponentWith(clickToShow, callback) {
     function showWith() {
       if (callback) {
