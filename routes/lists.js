@@ -118,6 +118,46 @@ module.exports = io => {
         });
     });
 
+    socket.on("DELETE_ITEM", (listId, itemId) => {
+      ShoppingList.findById(listId)
+        .then(list => {
+          list.items.id(itemId).remove();
+          list.save();
+          listsIO.to(listId).emit("UPDATE_ITEMS", list);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+
+    socket.on("CART_ITEM", (listId, itemId, res) => {
+      ShoppingList.findById(listId)
+        .then(list => {
+          const item = list.items.id(itemId);
+          console.log("HEHEHEHEHEHE" + item);
+          item.inCart = true;
+          list.save();
+          listsIO.to(listId).emit("UPDATE_ITEMS", list);
+        })
+        .catch(err => {
+          res(err, null);
+        });
+    });
+    socket.on("UNCART_ITEM", (listId, itemId, res) => {
+      ShoppingList.findById(listId)
+        .then(list => {
+          const item = list.items.id(itemId);
+          console.log("HEHEHEHEHEHE" + item);
+          item.inCart = false;
+          list.save();
+          listsIO.to(listId).emit("UPDATE_ITEMS", list);
+        })
+        .catch(err => {
+          console.log(err + "HSHSHSHHSHS");
+          res(err, null);
+        });
+    });
+
     socket.on("disconnect", () => console.log("User Disconnected"));
   });
 

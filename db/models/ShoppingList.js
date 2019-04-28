@@ -6,9 +6,9 @@ const listItemSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  inCart: Boolean,
-  purchaser: {
-    type: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+  inCart: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -34,8 +34,6 @@ shoppingListSchema.pre("save", async function() {
     User.addListToUsers(this.members, this._id);
   }
 });
-
-// shoppingListSchema.post("remove");
 
 const ShoppingList = mongoose.model("ShoppingList", shoppingListSchema);
 

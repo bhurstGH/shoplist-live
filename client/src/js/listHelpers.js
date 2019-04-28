@@ -43,3 +43,32 @@ export function deleteList(socket, listId) {
     }
   });
 }
+
+export function deleteItem(socket, listId, itemId) {
+  socket.emit("DELETE_ITEM", listId, itemId, (err, success) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(success);
+    }
+  });
+}
+
+export function addToCart(socket, listId, itemId) {
+  socket.emit("CART_ITEM", listId, itemId, (err, response) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(response);
+    }
+  });
+}
+export function removeFromCart(socket, listId, itemId) {
+  socket.emit("UNCART_ITEM", listId, itemId, (err, response) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(response);
+    }
+  });
+}

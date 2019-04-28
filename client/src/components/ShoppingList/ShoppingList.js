@@ -15,6 +15,7 @@ import {
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
 import PaymentIcon from "@material-ui/icons/Payment";
+import AddShoppingCart from "@material-ui/icons/AddShoppingCart";
 import ShoppingItem from "./ShoppingItem";
 
 const styles = theme => ({
@@ -53,7 +54,7 @@ const styles = theme => ({
 
 function ShoppingList(props) {
   const { classes, isShown, handleShow, passedProps } = props;
-  const { list, socket, setListsToggle } = passedProps;
+  const { list, socket } = passedProps;
 
   const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState("");
@@ -105,7 +106,12 @@ function ShoppingList(props) {
       />
       <List>
         {items.map(item => (
-          <ShoppingItem key={item._id} item={item} />
+          <ShoppingItem
+            key={item._id}
+            socket={socket}
+            item={item}
+            listId={list._id}
+          />
         ))}
       </List>
 
@@ -121,6 +127,14 @@ function ShoppingList(props) {
             onClick={addNewItem}
           >
             <AddIcon />
+          </Button>
+          <Button
+            className={classes.button}
+            color="inherit"
+            variant="outlined"
+            onClick={() => console.log(list)}
+          >
+            <AddShoppingCart />
           </Button>
           <Button
             className={classes.button}
