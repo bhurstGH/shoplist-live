@@ -15,7 +15,6 @@ import Clear from "@material-ui/icons/Clear";
 import AddList from "./AddList";
 import { getLists, deleteList } from "../../js/listHelpers";
 import io from "socket.io-client";
-import ShoppingList from "./ShoppingList";
 import useShowComponent from "../util/useShowComponent";
 
 const styles = theme => ({
