@@ -1,16 +1,4 @@
 const userQueries = require("../db/queries/userQueries");
-const passport = require("passport");
-
-function checkSession(req, res, next) {
-  console.log(req.user, "USER");
-  if (req.user) {
-    res
-      .status(200)
-      .json({ name: req.user.name, email: req.user.email, id: req.user._id });
-  } else {
-    res.json({ msg: req.authError });
-  }
-}
 
 module.exports = {
   checkSession(req, res, next) {

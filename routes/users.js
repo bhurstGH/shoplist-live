@@ -5,7 +5,7 @@ const passport = require("passport");
 const userController = require("../controllers/userController");
 
 // Check for user
-router.get("/user", userController.getUser);
+router.get("/user", userController.checkSession);
 
 // Log user in
 // Could not delegate this out to the controller for some reason.
