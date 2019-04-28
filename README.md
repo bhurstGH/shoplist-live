@@ -1,4 +1,4 @@
-#ShopList-Live
+# ShopList-Live
 
 ShopList-Live is a real time shopping list application. It allows you to create an account and share lists in real time with friends and family.
 
