@@ -3,7 +3,6 @@ const passport = require("passport");
 
 module.exports = {
   checkSession(req, res, next) {
-    console.log(req.user, "USER");
     if (req.user) {
       res
         .status(200)

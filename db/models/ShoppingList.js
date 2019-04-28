@@ -6,7 +6,10 @@ const listItemSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  inCart: Boolean
+  inCart: Boolean,
+  purchaser: {
+    type: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+  }
 });
 
 const shoppingListSchema = new mongoose.Schema({

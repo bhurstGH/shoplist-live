@@ -33,7 +33,6 @@ function ConnectionList(props) {
   const [connections, setConnections] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Retrieve connections from database
   useEffect(() => {
     getConnections(setConnections);
   }, []);

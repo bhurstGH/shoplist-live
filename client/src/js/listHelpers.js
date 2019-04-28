@@ -1,11 +1,11 @@
 export function checkListSuccess(err, list) {
   if (err) {
     console.log(err);
-    return { msg: "Failed to create list", variant: "error", payload: err };
+    return { msg: "List task failure", variant: "error", payload: err };
   }
 
   return {
-    msg: `Created ${list.name} with ${list.members.length} members`,
+    msg: `${list.name} with ${list.members.length} members saved to database`,
     variant: "success",
     payload: list
   };
@@ -13,6 +13,13 @@ export function checkListSuccess(err, list) {
 
 export function addNewList(socket, newList, callback) {
   socket.emit("NEW_LIST", newList, (err, list) => {
+    const { msg, variant, payload } = checkListSuccess(err, list);
+    callback(msg, variant, payload);
+  });
+}
+
+export function editList(socket, listId, editedList, callback) {
+  socket.emit("EDIT_LIST", listId, editedList, (err, list) => {
     const { msg, variant, payload } = checkListSuccess(err, list);
     callback(msg, variant, payload);
   });
@@ -27,7 +34,7 @@ export function getLists(socket, userId, callback) {
   });
 }
 
-export function deleteList(socket, listId, callback) {
+export function deleteList(socket, listId) {
   socket.emit("DELETE_LIST", listId, (err, success) => {
     if (err) {
       console.log(err);

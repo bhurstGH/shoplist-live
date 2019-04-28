@@ -25,7 +25,7 @@ module.exports = io => {
         .save()
         .then(list => {
           console.log(`New list created: ${list.name}`);
-          socket.emit("NEW_LIST", list);
+          socket.emit("UPDATE_LISTS", list);
           res(null, list);
         })
         .catch(err => {
@@ -49,6 +49,25 @@ module.exports = io => {
         });
     });
 
+    socket.on("EDIT_LIST", (listId, editedList, res) => {
+      ShoppingList.findByIdAndUpdate(
+        listId,
+        {
+          $set: { name: editedList.name, members: editedList.members }
+        },
+        { new: true }
+      )
+        .then(list => {
+          console.log(`Edited list: ${list.name}`);
+          socket.emit("UPDATE_LISTS", list);
+          res(null, list);
+        })
+        .catch(err => {
+          console.log(`Failed to edit list: ${err}`);
+          res(err, false);
+        });
+    });
+
     // Delete list
 
     socket.on("DELETE_LIST", listId => {
@@ -64,7 +83,6 @@ module.exports = io => {
     // Open this list for active tracking
 
     socket.on("OPEN_LIST", listId => {
-      console.log("OOOOOOPEN");
       socket.join(`${listId}`, () => {
         console.log(`${socket.id} joined room ${listId}`);
       });
@@ -73,7 +91,6 @@ module.exports = io => {
         .select("items")
         .then(list => {
           socket.emit("UPDATE_ITEMS", list);
-          console.log(items);
         })
         .catch(err => {
           socket.emit("ERROR");
@@ -92,7 +109,6 @@ module.exports = io => {
       }
       ShoppingList.findById(newItem.list)
         .then(list => {
-          console.log(list);
           list.items.push({ name: newItem.name });
           list.save();
           listsIO.to(list._id).emit("UPDATE_ITEMS", list);
