@@ -26,6 +26,15 @@ function ShoppingItem(props) {
   const [carted, setCarted] = useState(item.inCart);
   const [itemName, setItemName] = useState(item.name);
 
+  useEffect(() => {
+    socket.on("UPDATE_CART", (cartStatus, itemId) => {
+      if (itemId === item._id) {
+        console.log("updating cart");
+        setCarted(cartStatus);
+      }
+    });
+  });
+
   const handleChange = e => {
     setItemName(e.target.value);
   };
@@ -35,11 +44,11 @@ function ShoppingItem(props) {
   };
 
   const handleCarting = () => {
-    setCarted(true);
+    // setCarted(true);
     addToCart(socket, listId, item._id);
   };
   const handleUncarting = () => {
-    setCarted(false);
+    // setCarted(false);
     removeFromCart(socket, listId, item._id);
   };
 

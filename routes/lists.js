@@ -134,10 +134,10 @@ module.exports = io => {
       ShoppingList.findById(listId)
         .then(list => {
           const item = list.items.id(itemId);
-          console.log("HEHEHEHEHEHE" + item);
           item.inCart = true;
           list.save();
           listsIO.to(listId).emit("UPDATE_ITEMS", list);
+          listsIO.to(listId).emit("UPDATE_CART", item.inCart, itemId);
         })
         .catch(err => {
           res(err, null);
@@ -147,13 +147,12 @@ module.exports = io => {
       ShoppingList.findById(listId)
         .then(list => {
           const item = list.items.id(itemId);
-          console.log("HEHEHEHEHEHE" + item);
           item.inCart = false;
           list.save();
           listsIO.to(listId).emit("UPDATE_ITEMS", list);
+          listsIO.to(listId).emit("UPDATE_CART", item.inCart, itemId);
         })
         .catch(err => {
-          console.log(err + "HSHSHSHHSHS");
           res(err, null);
         });
     });

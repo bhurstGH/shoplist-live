@@ -97,12 +97,16 @@ function ShoppingList(props) {
     <Paper className={classes.paper} open={isShown} onClose={handleShow}>
       <Typography>List: {list.name}</Typography>
       <TextField
+        autoFocus
         fullWidth
         margin="normal"
         name="newItem"
         value={itemName}
         onChange={handleChange}
         placeholder="Enter new item. Submit with button below."
+        onKeyDown={e => {
+          if (e.keyCode === 13) addNewItem();
+        }}
       />
       <List>
         {items.map(item => (
