@@ -37,7 +37,7 @@ const styles = theme => ({
 });
 
 function ShoppingLists(props) {
-  const { classes, currentUser, showShoppingListWith, setListsToggle } = props;
+  const { classes, currentUser, showShoppingListWith } = props;
 
   // Necessary for passing the instance to other components
   const { current: socket } = useRef(
@@ -91,8 +91,7 @@ function ShoppingLists(props) {
             button
             onClick={() =>
               showShoppingListWith(null, sendProps => {
-                sendProps({ list, socket, setListsToggle: setListsToggle });
-                setListsToggle(false);
+                sendProps({ list, socket });
               })
             }
           >
@@ -106,7 +105,6 @@ function ShoppingLists(props) {
           </ListItem>
         ))}
       </List>
-      {/* {showShoppingList({ currentUser, socket })} */}
     </Paper>
   );
 }

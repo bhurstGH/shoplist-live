@@ -35,21 +35,19 @@ function App() {
   }, []);
 
   // Toggle between Login and Register forms
-  const [listsToggle, setListsToggle] = useState(true);
   const [loginToggle, setLoginToggle] = useState(true);
 
   // If the user is logged, load user page
   // If not, load the login and/or register forms.
   const isLoggedIn = () => {
     if (currentUser) {
-      return listsToggle ? (
-        <ShoppingLists
-          currentUser={currentUser}
-          showShoppingListWith={showShoppingListWith}
-          setListsToggle={setListsToggle}
-        />
-      ) : (
-        showShoppingList({ currentUser })
+      return (
+        showShoppingList({ currentUser }) || (
+          <ShoppingLists
+            currentUser={currentUser}
+            showShoppingListWith={showShoppingListWith}
+          />
+        )
       );
     } else {
       return loginToggle ? (

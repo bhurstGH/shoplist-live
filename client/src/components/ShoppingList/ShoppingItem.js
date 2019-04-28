@@ -5,7 +5,13 @@ import { Paper, TextField, Typography, Checkbox } from "@material-ui/core";
 const styles = theme => ({
   paper: {
     display: "flex",
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
+    [theme.breakpoints.up("sm")]: {
+      width: 500,
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
   }
 });
 

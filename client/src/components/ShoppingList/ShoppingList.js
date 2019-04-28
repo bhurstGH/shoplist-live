@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
-  Dialog,
-  DialogTitle,
   AppBar,
   Toolbar,
   Button,
@@ -54,11 +52,12 @@ function ShoppingList(props) {
   const [itemName, setItemName] = useState("");
 
   useEffect(() => {
+    socket.open();
     socket.emit("OPEN_LIST", list._id);
 
     socket.on("UPDATE_ITEMS", itemPayload => {
       console.log("Updating items...");
-      setItems(prevItems => [...prevItems, itemPayload]);
+      setItems(itemPayload.items);
     });
     socket.on("SUCCESS", res => {
       console.log("Request successful");
@@ -69,6 +68,7 @@ function ShoppingList(props) {
 
     return () => {
       socket.emit("CLOSE_LIST", list);
+      socket.close();
     };
   }, []);
 
@@ -89,6 +89,7 @@ function ShoppingList(props) {
       <Paper open={isShown} onClose={handleShow}>
         <Typography>List: {list.name}</Typography>
         <TextField
+          fullWidth
           className={classes.textfield}
           margin="normal"
           name="newItem"
@@ -104,7 +105,7 @@ function ShoppingList(props) {
 
         <AppBar position="fixed" className={classes.bottomAppBar}>
           <Toolbar className={classes.toolbar}>
-            <IconButton onClick={() => setListsToggle(true)}>
+            <IconButton onClick={handleShow}>
               <ArrowBackIcon className={classes.contrastText} />
             </IconButton>
             <Button
