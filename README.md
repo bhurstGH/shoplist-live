@@ -2,6 +2,8 @@
 
 ShopList-Live is a real time shopping list application. It allows you to create an account and share lists in real time with friends and family.
 
+Heroku deployment: https://shoplist-live.herokuapp.com/
+
 ## Usage:
 
 ### Getting started
