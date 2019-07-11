@@ -8,7 +8,7 @@ Heroku deployment: https://shoplist-live.herokuapp.com/
 
 ### Getting started
 
-Click to go to the register form. Here you can input an email address and password (this will be how you are identified for authentication), and a display name of your choice. Anything You'd like!
+Click to go to the register form. Here you can input an email address and password (this will be how you are identified for authentication), and a display name of your choice. Anything you'd like!
 
 After registering, login and you be taken to the main list page. This is where all the lists you are currently a member of will show up, in real time.
 
